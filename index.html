@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html  lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>L.F/肆叶</title>
+	<link rel="stylesheet" href="./assets/css/base.css">
+	<style>
+		body {
+			background-image: url('./assets/images/bg.jpg');
+			background-repeat: no-repeat;
+    		background-position: top center;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+
+		.header {
+			text-align: center;
+			padding: 80px 0;
+		}
+		.logo a {
+			font-size: 36px;
+			color: #fff;
+		}
+		.nav {
+			margin-top: 30px;
+		}
+		.nav-item {
+			display: inline-block;
+			margin: 0 5px;
+		}
+		.nav-item a {
+			display: inline-block;
+			line-height: 38px;		
+			font-size: 14px;	
+			color: #fff;
+			background: rgba(0,0,0,.4);
+			padding: 0 20px;
+			transition: all .5s;
+		}
+		.nav-item.active a,
+		.nav-item:hover a {
+			color: #ace360;
+			background: rgba(0,0,0,.6);
+		}
+
+
+		.article-item {
+			background: #fff;
+			margin-bottom: 50px;
+		}
+		.article-box {
+			position: relative;
+			padding: 20px 20px 20px 46px;
+		}
+		.article-box .typeicon {
+			display: inline-block;
+			position: absolute;
+			left: 20px; left: 0;
+			transform: translateX(-50%);
+			width: 54px;
+			height: 54px;
+			text-align: center;
+			line-height: 54px;
+		}
+		.typeicon .icon {
+			font-size: 36px;
+		}
+		.typeicon.like {
+			color: #a72820;
+			background: #fc5e51;
+		}
+		.typeicon.article {
+			color: #476f0f;
+			background: #9fd850;
+		}
+		.typeicon.audio {
+			color: #0b6c6d;
+			background: #23d3d6;
+		}
+		.typeicon.video {
+			color: #825904;
+			background: #ffb41a;
+		}
+		.typeicon.photo {
+			color: #771313;
+			background: #d8392c;
+		}
+
+		.article-box .title {
+			font-size: 24px;
+		}
+		.article-box .text {
+			line-height: 22px;
+			font-size: 14px;
+			color: #666;
+		}
+		.article-box .text p {
+			text-align: justify;
+			margin-bottom: 20px;
+		}
+		.article-box .text img {
+			max-width: 100%;
+		}
+		.article-info {
+			line-height: 20px;
+    		color: #999;
+			background: #e5e5e4;
+    		padding: 10px 20px;
+		}
+		.article-info .time,
+		.article-info .like,
+		.article-info .comment,
+		.article-info .sep,
+		.article-info .from {
+			float: left;
+		}
+		.article-info a {
+			color: #999;
+    		cursor: pointer;
+			margin-right: 8px;    
+		}
+		.article-info .sep {
+			margin-right: 8px;
+		}
+		.article-info .icon {
+			font-size: 18px;
+			margin-right: 2px;
+		}
+
+
+		.footer {
+			font-size: 13px;
+			color: #fff;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+		.footer a {
+			color: #fef9df;
+		}
+
+
+
+	</style>
+</head>
+<body>
+	 <header class="header container">
+	 	<h1 class="logo">
+	 		<a href="/">L.F/肆叶</a>
+	 	</h1>
+	 	<nav class="nav">
+	 		<ul class="nav-list">
+	 			<li class="nav-item active"><a href="">主页</a></li>
+	 			<li class="nav-item"><a href="">简言</a></li>
+	 			<li class="nav-item"><a href="">密思</a></li>
+	 			<li class="nav-item"><a href="">闲情</a></li>
+	 			<li class="nav-item"><a href="">逸致</a></li>
+	 			<li class="nav-item"><a href="">关于</a></li>
+	 		</ul>
+	 	</nav>
+	 </header>
+	 <main class="main container">
+	 	<ul class="article-list">
+	 		<li class="article-item">
+	 			<div class="article-box">
+	 				<a class="typeicon like" href=""><em class="icon icon-like"></em></a>
+	 				<div class="content">
+	 					<h2 class="title"><a href="">韶华易逝，红颜易老，繁华落尽，平淡归真。</a></h2>
+	 					<div class="text">
+	 						<p style="text-align:right;font-size:12px;"> Author:&nbsp;<a href="">L.F</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:<a href=""> 2016 年 07 月 04 日</a></p>
+	 					</div>
+	 				</div>
+	 			</div>
+	 		</li>
+	 		<li class="article-item">
+	 			<div class="article-box">
+	 				<a class="typeicon article" href=""><em class="icon icon-article"></em></a>
+	 				<div class="content">
+	 					<h2 class="title"><a href="">有些路，只能一个人走</a></h2>
+	 					<div class="text">
+	 						<p style="text-align:center;"><a href="" title="有些路，只能一个人走"><img src="./assets/images/test.jpg" alt="有些路，只能一个人走"></a></p>
+	 						<p>致歉先致歉各位支持我的博友，的确是好久没有来更新博客了，距离上篇博文已有四个月时间了，追其原因，无非是懒，上班忙，都是借口，哈哈~忙碌工作上的确最近强度加强了不少，这也使得我在技能上略有提升，尝试了一些新的前端框架，公司准备开始采用前后分离的工作模式，这也使得我们前端有了大展身手的机会，很荣幸，我们老大叫我第一个尝试这种开发方式，正好用在了公司内部项目上，虽然前期碰到了各种坑，但相信，黎明的曙光即将到来。生活有些路，只能一个人走；有些事，只能一人抗；过年过来，就入手了一台Kindle Paperwhite2，说是今年要多读书，上手用起来感觉还是很不错的，刚开始还是不太习惯这水墨屏的，点击一下屏幕&nbsp;[...]</p>
+	 					</div>
+	 				</div>
+	 			</div>
+	 			<div class="article-info">
+					<a class="time" href=""><em class="icon icon-time"></em><span>2015 年 8 月 9 日</span></a>
+					<a class="like" href=""><em class="icon icon-read"></em><span>112,336</span></a>
+					<a class="comment" href=""><em class="icon icon-message"></em><span>58</span></a>
+					<span class="sep">/</span>
+					<a class="from" href="">密思</a>
+					<span class="sep">/</span>
+					<p class="tags">
+						<span class="taglb">标签:&nbsp;</span>
+						<a href="">Mexam</a>
+						<a href="">MPreview.mobile</a>
+						<a href="">生活随笔</a>
+					</p>
+				</div>
+	 		</li>
+	 		<li class="article-item">
+	 			<div class="article-box">
+	 				<a class="typeicon audio" href=""><em class="icon icon-audio"></em></a>
+	 				<div class="content">
+	 					<h2 class="title"><a href="">有些路，只能一个人走</a></h2>
+	 					<div class="text">
+	 						<p style="text-align:center;"><a href="" title="有些路，只能一个人走"><img src="./assets/images/test.jpg" alt="有些路，只能一个人走"></a></p>
+	 						<p>致歉先致歉各位支持我的博友，的确是好久没有来更新博客了，距离上篇博文已有四个月时间了，追其原因，无非是懒，上班忙，都是借口，哈哈~忙碌工作上的确最近强度加强了不少，这也使得我在技能上略有提升，尝试了一些新的前端框架，公司准备开始采用前后分离的工作模式，这也使得我们前端有了大展身手的机会，很荣幸，我们老大叫我第一个尝试这种开发方式，正好用在了公司内部项目上，虽然前期碰到了各种坑，但相信，黎明的曙光即将到来。生活有些路，只能一个人走；有些事，只能一人抗；过年过来，就入手了一台Kindle Paperwhite2，说是今年要多读书，上手用起来感觉还是很不错的，刚开始还是不太习惯这水墨屏的，点击一下屏幕&nbsp;[...]</p>
+	 					</div>
+	 				</div>
+	 			</div>
+	 			<div class="article-info">
+					<a class="time" href=""><em class="icon icon-time"></em><span>2015 年 8 月 9 日</span></a>
+					<a class="like" href=""><em class="icon icon-read"></em><span>112,336</span></a>
+					<a class="comment" href=""><em class="icon icon-message"></em><span>58</span></a>
+					<span class="sep">/</span>
+					<a class="from" href="">密思</a>
+					<span class="sep">/</span>
+					<p class="tags">
+						<span class="taglb">标签:&nbsp;</span>
+						<a href="">Mexam</a>
+						<a href="">MPreview.mobile</a>
+						<a href="">生活随笔</a>
+					</p>
+				</div>
+	 		</li>
+	 		<li class="article-item">
+	 			<div class="article-box">
+	 				<a class="typeicon video" href=""><em class="icon icon-video"></em></a>
+	 				<div class="content">
+	 					<h2 class="title"><a href="">有些路，只能一个人走</a></h2>
+	 					<div class="text">
+	 						<p style="text-align:center;"><a href="" title="有些路，只能一个人走"><img src="./assets/images/test.jpg" alt="有些路，只能一个人走"></a></p>
+	 						<p>致歉先致歉各位支持我的博友，的确是好久没有来更新博客了，距离上篇博文已有四个月时间了，追其原因，无非是懒，上班忙，都是借口，哈哈~忙碌工作上的确最近强度加强了不少，这也使得我在技能上略有提升，尝试了一些新的前端框架，公司准备开始采用前后分离的工作模式，这也使得我们前端有了大展身手的机会，很荣幸，我们老大叫我第一个尝试这种开发方式，正好用在了公司内部项目上，虽然前期碰到了各种坑，但相信，黎明的曙光即将到来。生活有些路，只能一个人走；有些事，只能一人抗；过年过来，就入手了一台Kindle Paperwhite2，说是今年要多读书，上手用起来感觉还是很不错的，刚开始还是不太习惯这水墨屏的，点击一下屏幕&nbsp;[...]</p>
+	 					</div>
+	 				</div>
+	 			</div>
+	 			<div class="article-info">
+					<a class="time" href=""><em class="icon icon-time"></em><span>2015 年 8 月 9 日</span></a>
+					<a class="like" href=""><em class="icon icon-read"></em><span>112,336</span></a>
+					<a class="comment" href=""><em class="icon icon-message"></em><span>58</span></a>
+					<span class="sep">/</span>
+					<a class="from" href="">密思</a>
+					<span class="sep">/</span>
+					<p class="tags">
+						<span class="taglb">标签:&nbsp;</span>
+						<a href="">Mexam</a>
+						<a href="">MPreview.mobile</a>
+						<a href="">生活随笔</a>
+					</p>
+				</div>
+	 		</li>
+	 		<li class="article-item">
+	 			<div class="article-box">
+	 				<a class="typeicon photo" href=""><em class="icon icon-photo"></em></a>
+	 				<div class="content">
+	 					<h2 class="title"><a href="">有些路，只能一个人走</a></h2>
+	 					<div class="text">
+	 						<p style="text-align:center;"><a href="" title="有些路，只能一个人走"><img src="./assets/images/test.jpg" alt="有些路，只能一个人走"></a></p>
+	 						<p>致歉先致歉各位支持我的博友，的确是好久没有来更新博客了，距离上篇博文已有四个月时间了，追其原因，无非是懒，上班忙，都是借口，哈哈~忙碌工作上的确最近强度加强了不少，这也使得我在技能上略有提升，尝试了一些新的前端框架，公司准备开始采用前后分离的工作模式，这也使得我们前端有了大展身手的机会，很荣幸，我们老大叫我第一个尝试这种开发方式，正好用在了公司内部项目上，虽然前期碰到了各种坑，但相信，黎明的曙光即将到来。生活有些路，只能一个人走；有些事，只能一人抗；过年过来，就入手了一台Kindle Paperwhite2，说是今年要多读书，上手用起来感觉还是很不错的，刚开始还是不太习惯这水墨屏的，点击一下屏幕&nbsp;[...]</p>
+	 					</div>
+	 				</div>
+	 			</div>
+	 			<div class="article-info">
+					<a class="time" href=""><em class="icon icon-time"></em><span>2015 年 8 月 9 日</span></a>
+					<a class="like" href=""><em class="icon icon-read"></em><span>112,336</span></a>
+					<a class="comment" href=""><em class="icon icon-message"></em><span>58</span></a>
+					<span class="sep">/</span>
+					<a class="from" href="">密思</a>
+					<span class="sep">/</span>
+					<p class="tags">
+						<span class="taglb">标签:&nbsp;</span>
+						<a href="">Mexam</a>
+						<a href="">MPreview.mobile</a>
+						<a href="">生活随笔</a>
+					</p>
+				</div>
+	 		</li>
+	 	</ul>
+	</main>
+	<footer class="footer container">
+		<p>Copyright © 2016 <a href="http://lofreer.com/">L.F</a> All Rights Reserved <a href="http://www.miitbeian.gov.cn/" target="_blank">鄂ICP备16009725号-2</a></p>
+	</footer>
+	<script src="./assets/js/pjax.js"></script>
+	<script src="./assets/js/app.js"></script>
+	<script>
+		var navs = app.el('.nav-list>li');
+		var current = navs[0];
+		navs.on('click',function(ev){
+			current.classList.remove('active');
+			(current = this).classList.add('active');
+		});
+		PJAX.init();
+	</script>
+</body>
+</html>
