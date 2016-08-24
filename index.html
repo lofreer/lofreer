@@ -286,6 +286,8 @@
 		var apiUrl = 'https://coding.net/api/user/lofreer/project/focus_www/topics?page=1&pageSize=10';
 		app.ajax(apiUrl, 'get', null, function(cd){
 			console.log(cd);
+		},function(cb){
+			console.log(cb)
 		})
 		console.log(marked('I am using __markdown__.'))
 		var navs = app.el('.nav-list>li');
