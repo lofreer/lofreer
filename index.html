@@ -282,16 +282,22 @@
 	<footer class="footer container">
 		<p>Copyright © 2016 <a href="http://lofreer.com/">L.F</a> All Rights Reserved <a href="http://www.miitbeian.gov.cn/" target="_blank">鄂ICP备16009725号-2</a></p>
 	</footer>
+	<script src="./assets/js/marked.js"></script>
 	<script src="./assets/js/pjax.js"></script>
 	<script src="./assets/js/app.js"></script>
 	<script>
+		var api = 'https://coding.net/api/user/lofreer/project/focus_www/topics?page=1&pageSize=10';
+		app.ajax(url, 'get', null, function(cd){
+			console.log(cd);
+		})
+		console.log(marked('I am using __markdown__.'))
 		var navs = app.el('.nav-list>li');
 		var current = navs[0];
 		navs.on('click',function(ev){
 			current.classList.remove('active');
 			(current = this).classList.add('active');
 		});
-		PJAX.init();
+		// PJAX.init();
 	</script>
 </body>
 </html>
