@@ -282,14 +282,15 @@
 	<script src="./assets/js/marked.js"></script>
 	<script src="./assets/js/pjax.js"></script>
 	<script src="./assets/js/app.js"></script>
+	<script src="https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10"></script>
 	<script>
-		var apiUrl = 'https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10';
+		// var apiUrl = 'https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10';
 		// var apiUrl = 'https://api.github.com/users/lofreer';
-		app.ajax(apiUrl, 'get', null, function(cd){
-			console.log(cd);
-		},function(cb){
-			console.log(cb)
-		})
+		// app.ajax(apiUrl, 'get', null, function(cd){
+		// 	console.log(cd);
+		// },function(cb){
+		// 	console.log(cb)
+		// })
 		console.log(marked('I am using __markdown__.'))
 		var navs = app.el('.nav-list>li');
 		var current = navs[0];
