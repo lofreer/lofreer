@@ -142,7 +142,6 @@
 
 
 	</style>
-	<script type="text/javascript" src="http://tajs.qq.com/stats?sId=57333228" charset="UTF-8"></script>
 </head>
 <body>
 	 <header class="header container">
@@ -286,8 +285,8 @@
 	<script src="./assets/js/pjax.js"></script>
 	<script src="./assets/js/app.js"></script>
 	<script>
-		var api = 'https://coding.net/api/user/lofreer/project/focus_www/topics?page=1&pageSize=10';
-		app.ajax(url, 'get', null, function(cd){
+		var apiUrl = 'https://coding.net/api/user/lofreer/project/focus_www/topics?page=1&pageSize=10';
+		app.ajax(apiUrl, 'get', null, function(cd){
 			console.log(cd);
 		})
 		console.log(marked('I am using __markdown__.'))
