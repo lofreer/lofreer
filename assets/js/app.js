@@ -146,8 +146,6 @@
 
         request.onerror = function () { error(this.response) };
 
-        request.setRequestHeader('Access-Control-Allow-Origin','*');
-
         type === 'POST' && request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         type === 'POST' ? request.send(toHash(data)) : request.send();
     };

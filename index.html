@@ -283,8 +283,8 @@
 	<script src="./assets/js/pjax.js"></script>
 	<script src="./assets/js/app.js"></script>
 	<script>
-		var apiUrl = 'https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10';
-		// var apiUrl = 'http://www.daily.bookln.cn/sysNoticeService/queryUnReadNum.do';
+		// var apiUrl = 'https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10';
+		var apiUrl = 'https://api.github.com/lofreer';
 		app.ajax(apiUrl, 'get', null, function(cd){
 			console.log(cd);
 		},function(cb){
