@@ -134,7 +134,7 @@
         type = type.toUpperCase();
 
         var request = new XMLHttpRequest();
-        request.open(type, app.domain + url, true);
+        request.open(type, url, true);
 
         request.onload = function () {
             if (this.status >= 200 && this.status < 400) {
