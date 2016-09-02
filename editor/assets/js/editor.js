@@ -1098,7 +1098,7 @@
 			}
 
 			function insertImg() {
-				var src = document.getElementById('input-url').value;
+				var src = document.getElementById('input-src').value;
 				if (src) {
 					editor.execCommand('inserthtml', '<img src="'+ src +'">');
 					Edit.ui.closePopup();
