@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>超轻富文本编辑器</title>
+	<link rel="stylesheet" href="./assets/css/editor.css">
+	<style>
+		.btn {
+			display: inline-block;
+			cursor: pointer;
+			padding: 5px 10px;
+			border: 1px solid #f0f3f6;
+			border-radius: 2px;
+			margin-bottom: 10px;
+		}
+		.editor {
+			width: 750px;
+			height: 300px;
+			margin: 50px auto;
+		}
+	</style>
+</head>
+<body>	
+	<div id="editor" class="editor"></div>
+	<div id="editor2" class="editor"></div>
+	
+	<script src="./assets/js/editor.js"></script>
+	<script>		
+		var edit = Edit.getEditor('editor');		
+		console.log(edit)
+		var edit2 = Edit.getEditor('editor2');
+		console.log(edit2);
+	</script>
+</body>
+</html>
