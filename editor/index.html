@@ -8,38 +8,34 @@
 		.editor {
 			width: 750px;
 			height: 300px;
-			margin: 50px auto;
+			margin: 30px auto;
 		}
 	</style>
 </head>
 <body>	
-	<div id="editor" class="editor"></div>
+	<div id="editor1" class="editor"></div>
+	<div id="editor2" class="editor"></div>
+	<div id="editor3" class="editor"></div>
+	<div id="editor4" class="editor"></div>
+	<div id="editor5" class="editor"></div>
+	<div id="editor6" class="editor"></div>
+	<div id="editor7" class="editor"></div>
+	<div id="editor8" class="editor"></div>
+	<div id="editor9" class="editor"></div>
+	<div id="editor10" class="editor"></div>
+	<div id="editor11" class="editor"></div>
+	<div id="editor12" class="editor"></div>
+	<div id="editor13" class="editor"></div>
+	<div id="editor14" class="editor"></div>
+	<div id="editor15" class="editor"></div>
+	<div id="editor16" class="editor"></div>
+	<div id="editor17" class="editor"></div>
+
 	<script src="./assets/js/editor.js"></script>
 	<script>		
-		// Edit.registerUI('summary',function(editor,uiName){
-		// 	var summary = 	'<details>'
-		// 					+'<summary>模块标题</summary>'
-		// 					+'<p>模块内容</p>'
-		// 				+'</details>'; 
-		//     editor.registerCommand(uiName,{
-		//         execCommand:function(){
-		//         	editor.execCommand('inserthtml',summary);
-		//         }
-		//     });
-		//     var btn = new Edit.ui.Button({
-		//         name:'summary',
-		//         title:'summary',
-		//         cssRules :'background-position: -280px 0;',
-		//         handles: {
-		//         	click: function () {
-		// 	           editor.execCommand(uiName);
-		// 	        }
-		// 	    }
-		//     });	
-		//     return btn;
-		// });
-		var edit = Edit.getEditor('editor');	
-		console.log(edit)
+		Array.prototype.slice.call(document.querySelectorAll('.editor')).forEach(function(item){
+			Edit.getEditor(item.getAttribute('id'));
+		});
 	</script>
 </body>
 </html>
