@@ -146,6 +146,9 @@
 
         request.onerror = function () { error(this.response) };
 
+        request.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+
+
         type === 'POST' && request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         type === 'POST' ? request.send(toHash(data)) : request.send();
     };

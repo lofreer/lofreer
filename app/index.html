@@ -31,8 +31,8 @@
 		}
 		.nav-item a {
 			display: inline-block;
-			line-height: 38px;		
-			font-size: 14px;	
+			line-height: 38px;
+			font-size: 14px;
 			color: #fff;
 			background: rgba(0,0,0,.4);
 			padding: 0 20px;
@@ -118,7 +118,7 @@
 		.article-info a {
 			color: #999;
     		cursor: pointer;
-			margin-right: 8px;    
+			margin-right: 8px;
 		}
 		.article-info .sep {
 			margin-right: 8px;
@@ -142,7 +142,8 @@
 	</style>
 </head>
 <body>
-	 <header class="header container">
+    <div id="root"></div>
+	<!-- <header class="header container">
 	 	<h1 class="logo">
 	 		<a href="/">L.F/肆叶</a>
 	 	</h1>
@@ -156,8 +157,8 @@
 	 			<li class="nav-item"><a href="">关于</a></li>
 	 		</ul>
 	 	</nav>
-	 </header>
-	 <main class="main container">
+	</header>
+	<main class="main container">
 	 	<ul class="article-list">
 	 		<li class="article-item">
 	 			<div class="article-box">
@@ -279,25 +280,27 @@
 	<footer class="footer container">
 		<p>Copyright © 2016 <a href="http://lofreer.com/">L.F</a> All Rights Reserved <a href="http://www.miitbeian.gov.cn/" target="_blank">鄂ICP备16009725号-2</a></p>
 	</footer>
-	<script src="./assets/js/marked.js"></script>
+    <div id="root"></div> -->
+    <script src="../dist/bundle.js"></script>
+	<!-- <script src="./assets/js/marked.js"></script>
 	<script src="./assets/js/pjax.js"></script>
 	<script src="./assets/js/app.js"></script>
 	<script>
 		var apiUrl = 'https://coding.net/api/user/lofreer/project/lofreer_www/topics?page=1&pageSize=10';
-		// var apiUrl = 'https://api.github.com/users/lofreer';
-		app.ajax(apiUrl, 'get', null, function(cd){
-			console.log(cd);
+		var apiUrl = 'https://api.github.com/repos/lofreer/lofreer/issues/1';
+		app.ajax(apiUrl, 'get', null, function(cb){
+			console.log(cb);
+			console.log(marked(cb[0].body))
 		},function(cb){
 			console.log(cb)
 		})
-		console.log(marked('I am using __markdown__.'))
 		var navs = app.el('.nav-list>li');
 		var current = navs[0];
 		navs.on('click',function(ev){
 			current.classList.remove('active');
 			(current = this).classList.add('active');
 		});
-		// PJAX.init();
-	</script>
+		PJAX.init();
+	</script> -->
 </body>
 </html>
