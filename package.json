@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/favers/blog.git"
+    "url": "git+https://github.com/lofreer/lofreer.git"
   },
   "keywords": [],
   "author": "favers",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/favers/blog/issues"
+    "url": "https://github.com/lofreer/lofreer/issues"
   },
-  "homepage": "https://github.com/favers/blog#readme",
+  "homepage": "https://github.com/lofreer/lofreer#readme",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.14.0",
