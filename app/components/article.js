@@ -10,6 +10,7 @@ export default class Article extends React.Component {
         }
     }
     componentDidMount() {
+        console.log(this.props)
         fetch(`https://api.github.com/repos/lofreer/lofreer/issues/${this.props.params.id}`)
             .then(
                 res => res.json()
