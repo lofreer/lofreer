@@ -48,7 +48,7 @@ module.exports= {
             loader: 'file-loader'
         }, {
             test: /\.(png|jpg)$/,
-            loader: 'url-loader?limit=8192&name=./assets/images/[hash].[ext]'
+            loader: 'url-loader?limit=8192&name=[hash].[ext]'
         }]
 	},
 	plugins: [
