@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import Header from './components/header';
 import Main from './components/Main';
 import Footer from './components/footer';
+import Editor from './components/editor';
 
 
 class App extends React.Component {
@@ -21,10 +22,11 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div className="container grid-960">
+			<div className="container grid-960" style={{'paddingBottom':'50px'}}>
 				<Header sendAction={this.switchLabel}/>
 				<Main label={this.state.label}/>
 				<Footer/>
+				<Editor id="editor" style={{'height': '300px'}}/>
 		</div>
 		);
 	}
