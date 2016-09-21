@@ -1,0 +1,27 @@
+.header {
+	text-align: center;
+	padding: 80px 0;
+}
+.logo a {
+	font-size: 36px;
+	color: #fff;
+}
+.nav {
+	margin-top: 30px;
+}
+.nav-item {
+	display: inline-block;
+	line-height: 38px;
+	font-size: 14px;
+	color: #fff;
+	background: rgba(0,0,0,.4);
+	cursor: pointer;
+	padding: 0 20px;
+	margin: 0 5px;
+	transition: all .5s;
+}
+.nav-item.active,
+.nav-item:hover {
+	color: #ace360;
+	background: rgba(0,0,0,.6);
+}
