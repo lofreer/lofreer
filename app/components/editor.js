@@ -1,5 +1,6 @@
 import React from 'react';
 import Edit from 'simple-editor';
+import 'simple-editor/lib/plugins/mathtype';
 
 export default class Editor extends React.Component {
 
