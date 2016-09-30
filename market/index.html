@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Marketing</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        } 
+        body {
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+            font-size: 16px;
+            color: #444;
+        }
+        .container {
+            height: 100%;
+            background: #fbf3ea;
+            background: linear-gradient(#fbf1e7,#fbf3ea);
+            background: -webkit-linear-gradient(top,#fbf1e7,#fbf3ea);
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+        p {
+            min-height: 20px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        .left {
+            text-align: left;
+        }
+        .center {
+            text-align: center;
+        }
+        .right {
+            text-align: right;
+        }
+        .selected {
+            background: #f0f3f6;
+        }
+        .max-width {
+            width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" class="container"></div>
+    <script>
+        var container = document.querySelector('.container');
+
+        var system = {
+            win: false,
+            mac: false,
+            xll: false,
+            ipad:false
+        };
+        //检测平台
+        var p = navigator.platform;
+        system.win = p.indexOf("Win") == 0;
+        system.mac = p.indexOf("Mac") == 0;
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+        system.ipad = (navigator.userAgent.match(/iPad/i) != null)?true:false;
+        if (system.win || system.mac || system.xll||system.ipad) {
+            container.classList.add('max-width')
+        } else {
+
+        }
+
+        var arr = [
+            {
+                direction: 'center',
+                str: '云梯大事记',
+                speed: 300,
+                wait: 1000,
+                style: 'font-size:20px;font-weight:bold;'
+            },
+            {
+                str: '   老大要结婚了！',
+                style: 'font-weight:bold;'
+            },
+            {
+                str: '   老大要结婚了！',
+                style: 'font-weight:bold;'
+            },
+            {
+                str: '   老大要结婚了！',
+                style: 'font-weight:bold;'
+            },
+            {
+                str: '   因为要回家乡去看望年迈的外公外婆，所以就不去大江西啦，在这里提前祝福老大新婚快乐，百年好合！（早生贵子就不说了哈，你懂的〜）'
+            },
+            {
+                str: '   国庆小长假，也祝福各位小伙伴玩的开心，但千万要注意安全，节日归来我们继续并肩奋战，加油哟〜'
+            },
+            {
+                str: ''
+            },
+            {
+                direction: 'right',
+                str: 'L.F/四叶',
+                speed: 300,
+                wait: 1000,
+                back: '4:肆叶'
+            }
+        ];
+
+        function input(container, arr) {
+
+            var fns = arr.map(function(item){
+                return function(){
+                    var index = 0;
+                    var timer;
+
+                    var content = document.createElement('p');
+
+                    var cursor = document.createElement('span');
+                    cursor.innerHTML = '｜';
+
+                    var insert = document.createElement('span');
+
+                    content.appendChild(insert);
+                    content.appendChild(cursor);
+
+                    container.appendChild(content);
+                    
+                    var strArr = item.str.split('').map(function(str){
+                        if (str === ' ') {
+                            return '&nbsp;&nbsp;';
+                        }
+                        return str;
+                    });
+                    
+                    timer = setInterval(handler, item.speed || 300);
+                    if (item.back) {
+                        var temp = item.back.split(':');
+                        item.backNum = parseInt(temp[0]);
+                        item.breakNum = temp[1].length + item.backNum;
+                        item.backStr = temp[1].split('').reverse();
+                    }
+                    function handler() {
+                        
+                        if (item.back && index >= item.breakNum) {
+
+                            insert.innerHTML = strArr.slice(0,(index = --item.breakNum)).join('');
+                            strArr[index] = item.backStr.shift();
+                            if (index === item.backNum) {
+                                item.back = null;
+                            }
+                        } else {                            
+                            insert.innerHTML = strArr.slice(0,++index).join('');
+                        }
+
+                        if (strArr[index-1] === '，' || strArr[index-1] === '！') {
+                            clearInterval(timer);
+                            setTimeout(function(){
+                                timer = setInterval(handler, item.speed || 300);
+                            },500);
+                        };  
+                        
+                        if (index > strArr.length) {
+                            clearInterval(timer);                                
+                            if (item.style) {
+                                insert.classList.add('selected');
+                                insert.style.cssText = item.style;
+                                cursor.style['font-size'] = insert.style['font-size'];
+                            }
+                            if (item.direction && item.direction !== 'left') {
+                                setTimeout(function(){
+                                    content.classList.add(item.direction);
+                                }, 300);
+                            }
+                            setTimeout(function(){
+                                insert.classList.remove('selected');
+                            }, 600);
+                            setTimeout(function(){
+                                content.removeChild(cursor);
+                                var fn = fns.shift();
+                                fn && fn();
+                            }, item.wait || 800);
+                        }
+                    }                    
+                }
+            });
+            fns.shift()();
+        }
+
+        
+        setTimeout(function(){
+            input(container, arr);
+        }, 1000);
+
+    </script>
+</body>
+</html>
