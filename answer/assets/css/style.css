@@ -90,7 +90,7 @@
 }
 .topic-material,
 .topic-describe {
-    height: 50px;
+    min-height: 50px;
     border-bottom: 1px solid #f0f3f6;
     padding: 5px;
 }
