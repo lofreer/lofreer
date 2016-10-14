@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WeChat answer</title>
+    <link rel="stylesheet" href="assets/css/initialization.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!--<div class="paper-wrapper">
+        <h1 class="title">2016--建筑工程《项目管理》微试卷</h1>
+        <p class="info">难度：一般      总分：100分</p>
+        <p class="describe">本套试卷专为一级建造师服务，专攻于建设工程-项目管理内容，建议在读完《一级建造师-建设工程》书籍后使用本试卷验收效果。</p>
+
+        <div id="topic-start" class="topic-start">开始答卷</div>
+    </div>-->
+    <div id="topic-wrapper" class="topic-wrapper">
+        <!--<div class="topic-title"><span class="type">单选题</span><span class="score">(2分)</span></div>
+        <div class="topic-main">
+            <ul class="topic-list">
+            <li class="topic-item">                    
+                <div class="describe">
+                    若 m、n 是任意实数，且 m>n，则( )
+                </div>
+                <ol class="answer-list">
+                    <li class="answer-item">选项A答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项B答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项C答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项D答案内容答案内容答案内容答案内容</li>
+                </ol>
+            </li>
+            <li class="topic-item">
+                <div class="describe">
+                    若 m、n 是任意实数，且 m>n，则( )
+                </div>
+                <ol class="answer-list">
+                    <li class="answer-item">选项A答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项B答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项C答案内容答案内容答案内容答案内容</li>
+                    <li class="answer-item">选项D答案内容答案内容答案内容答案内容</li>
+                </ol>    
+            </li>
+            <li class="topic-item">
+                <div class="describe">
+                    矩形的对角线互相平分且相等，正确吗？
+                </div>
+                <ol class="answer-list">
+                    <li class="answer-item">正确</li>
+                    <li class="answer-item">错误</li>
+                </ol>
+            </li>
+        </ul>
+        </div>
+        <div class="topic-handlers">
+            <span class="prev btn">上一题</span>
+            <span class="card btn">题卡</span>
+            <span class="submit btn">交卷</span>
+            <span class="next btn">下一题</span>
+        </div>
+        <div class="topic-card">
+            <ul class="card-list">
+                <li class="card-item">1</li>
+                <li class="card-item active">2</li>
+                <li class="card-item">3</li>
+                <li class="card-item">4</li>
+                <li class="card-item">5</li>
+                <li class="card-item">6-1</li>
+                <li class="card-item">6-2</li>
+                <li class="card-item">6-3</li>
+                <li class="card-item">6-4</li>
+                <li class="card-item active">6-5</li>
+            </ul>
+        </div>-->
+    </div>
+    <script src="assets/js/data.js"></script>    
+    <!--<script src="assets/js/script.js"></script>-->
+    <script src="assets/js/answer.js"></script>
+    <script>
+        var host = 'http://www.daily.bookln.cn';
+        var resUrl = '/examPaperService/getIdAndSign.do';
+        var paperUrl = '/exerciseService/exercise.do';
+        var ajax = Answer.ajax;
+
+        ajax(host+paperUrl, 'post', {id: '54970', sign: '059f23', type: '15'}, function(cb){
+            if (cb.success) {
+                new Answer({
+                    wrap: '.topic-wrapper',
+                    initData: cb.data,
+                    paper: true,
+                    topicApi: '/exerciseService/item.do',
+                    host: 'http://www.daily.bookln.cn'
+                });
+            }
+        });
+        /**
+        var answer = new Answer({
+            wrap: '.topic-wrapper',
+            data: paper.topics,
+            paper: true
+        });
+        console.log(answer);
+
+        var start = document.getElementById('topic-start'),
+            wrapper = document.getElementById('topic-wrapper');
+        start.addEventListener('click', function(){
+            wrapper.classList.add('show');
+        })
+        **/
+    </script>
+</body>
+</html>
