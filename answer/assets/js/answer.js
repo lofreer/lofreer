@@ -581,15 +581,15 @@
 					if (Math.abs(distanceX) >= Math.abs(distanceY)) {
 						if (has) {
 							direction ? self.index++ : self.index--;
+							self.setHeader();
+							self.materialListen(!direction);
 						}
 						if (self.index < 0) self.index = 0;
 						if (self.index > length) self.index = length;
 
 						var scroll = -(self.index * this.offsetWidth);
-						
 						self.setTransition(this, 'transform 300ms ease-out');
-						self.setTransform(this, {x: scroll, y: 0});
-						self.setHeader();
+						self.setTransform(this, {x: scroll, y: 0});						
 
 						if (self.index === 0) {
 							self.handlers.querySelector('.prev').classList.add('disabled');
@@ -598,8 +598,7 @@
 						} else {
 							self.handlers.querySelector('.prev').classList.remove('disabled');
 							self.handlers.querySelector('.next').classList.remove('disabled');
-						}
-						self.materialListen(!direction);
+						}						
 					}
 				},
 				transitionend: function(ev) {
@@ -644,7 +643,6 @@
 			var self = this;
 			if (back && self.handlers.querySelector('.prev').classList.contains('disabled')) return;
 			if (!back && self.handlers.querySelector('.next').classList.contains('disabled')) return; 
-
 			var length, scroll, isShowCard;
 			length = self.length - 1;
 			// isShowCard = self.index === length;
