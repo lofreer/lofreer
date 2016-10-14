@@ -426,9 +426,9 @@
 			if (show) {				
 				self.material && self.wrap.removeChild(self.material);
 				self.material = cel('div',{class:'material'},[
-					cel('div',{class:'material'},[material]),
-					audio && cel('AUDIO',{class:'audio', src:data.audioPath, controls:true}),
-					video && cel('VIDEO',{class:'video', src:'http://www.runoob.com/try/demo_source/movie.mp4', controls:true}) 
+					cel('div',{class:'topic-material'},[material]),
+					audio && cel('AUDIO',{class:'topic-audio', src:data.audioPath, controls:true}),
+					video && cel('VIDEO',{class:'topic-video', src:'http://www.runoob.com/try/demo_source/movie.mp4', controls:true}) 
 				]);
 				self.wrap.insertBefore(self.material, self.topicMain);
 			}
@@ -444,8 +444,8 @@
 					cel('span',{class:'score'},['('+ data.defaultScore +'分)'])
 				]);
 			} else {
-				data.audioPath && (audio = cel('AUDIO',{class:'audio', src:data.audioPath, controls:true}));
-				data.videoPath && (audio = cel('VIDEO',{class:'video', src:'http://www.runoob.com/try/demo_source/movie.mp4', controls:true}));
+				data.audioPath && (audio = cel('AUDIO',{class:'topic-audio', src:data.audioPath, controls:true}));
+				data.videoPath && (audio = cel('VIDEO',{class:'topic-video', src:'http://www.runoob.com/try/demo_source/movie.mp4', controls:true}));
 			}
 
 			data.description && (description = cel('div',{class: 'topic-describe'},[data.description]));
