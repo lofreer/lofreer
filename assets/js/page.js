@@ -102,7 +102,7 @@
                 bookwrap
             ]);
 
-            var bookreadClose = ce('div', {'class': 'bookread-close'},[ '关闭' ], {
+            var bookreadClose = ce('div', {'class': 'bookread-close'},[ '关&nbsp;闭' ], {
                 click: function() {
                     var parent = this.parentNode;
                     parent.classList.remove('show');
