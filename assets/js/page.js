@@ -52,7 +52,7 @@
             });
 
             books.forEach(function(book){
-                parse(book, 600, temps);
+                parse(book, 660, temps);
             });
             temp.parentNode.removeChild(temp);
             temps.forEach(function(item, i) {
@@ -67,18 +67,17 @@
 
             var cover = [
                 ce('p', {'class': 'name'}, [data.info.name]),
-                ce('p', {'class': 'author'}, [data.info.author])
+                ce('p', {'class': 'author'}, ['—' + data.info.author])
             ]
             pages.unshift([cover, null]);
-
-            console.log(pages)
+            pages.push([null, null]);
 
             var zIndex = pages.length;
 
             bookinfo = ce('div', {'class': 'bookinfo'}, [
                 ce('div', {'class': 'content'}, [
                     ce('p', {'class': 'preface'}, [ data.info.preface ]),
-                    ce('p', {'class': 'author'}, [ data.info.author ])
+                    ce('p', {'class': 'author'}, [ '—' + data.info.author ])
                 ])
             ]);
 
@@ -129,6 +128,7 @@
             i = 0,
             len = els.length;
         while(i < len) {
+            // h += (els[i].offsetHeight + parseInt(getComputedStyle(els[i])['marginTop']));
             h += els[i].offsetHeight;
             if (h > height) {
                 index = i;

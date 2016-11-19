@@ -1,6 +1,6 @@
 var datas = {
     info: {
-        preface: '一切不过是一路相伴，<br>留下的都是喜悦。',
+        preface: '一切不过是一路相伴<br>留下的都是喜悦',
         author: '肆叶',
         name: '素人'
     },

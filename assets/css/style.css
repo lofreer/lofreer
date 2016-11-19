@@ -2,6 +2,10 @@
     box-sizing: border-box;
     user-select: none;
 }
+html, body {
+    width: 100%;
+    height: 100%;
+}
 body {
     background: #f5f5f5;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
@@ -9,10 +13,13 @@ body {
     color: #808080;
 }
 .bookcase {
+    position: relative;
+    left: 50%;
+    top: 50%;
     width: 610px;
     font-size: 0;
     border: 5px solid #fff;
-    margin: 50px auto 0;
+    transform: translate(-50%, -50%);
 }
 .bookcase .bookbox {
     display: inline-block;
@@ -64,18 +71,18 @@ body {
 }
 
 .bookread {
+    position: relative;
+    left: 50%;
+    top: 50%;
     display: flex;
-    width: 860px;
-    height: 600px;
-    margin: 50px auto 0;
+    width: 960px;
+    height: 660px;
+    transform: translate(-50%, -50%);
 }
 .bookread .bookinfo,
 .bookread .bookwrap {
     position: relative;
     flex: 1;
-}
-.bookread .bookinfo {
-    position: relative;
 }
 .bookread .bookinfo .content {
     position: absolute;
@@ -86,6 +93,7 @@ body {
     text-align: right;
     letter-spacing: 2px;
     writing-mode: vertical-rl;
+    padding-bottom: 20px;
 }
 .bookread .name {
     position: absolute;
@@ -104,7 +112,7 @@ body {
     writing-mode: vertical-rl;
 }
 .bookread .bookwrap {
-    background: #fff;
+    /*background: #fff;*/
     transform-style: preserve-3d; 
     transform: rotatex(5deg);  
 }
@@ -210,14 +218,29 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    text-align: justify;
     font-size: 13px;
     background: #fff;
-    /*border: 1px solid #ccc;*/
-    padding: 10px 20px;
+    border: 1px solid rgba(200,200,200,.2);
+    padding: 20px 25px;
     overflow: auto;
+}
+.page .front .content {
+    border-width: 1px 1px 1px 0;
+}
+.page .back .content {
+    border-width: 1px 0 1px 1px;
 }
 .page .content img {
     max-width: 100%;
+    cursor: zoom-in;
+}
+.page .content p {
+    line-height: 1.5;
+    text-indent: 1.5em;
+}
+.page.cover .content p {
+    text-indent: 0;
 }
 .page .content::before {
     position: absolute;
@@ -238,22 +261,17 @@ body {
     width: 0;
 }
 
-.column {
-    width: 600px;
-    height: 400px;
-    margin: 50px auto 0;
-    /*columns: 200px;
-    column-gap: 0px;*/
-}
-.column img {
-    max-width: 100%;
-}
 
 .temp {
     position: fixed;
     left: 9999px; top: 0;
     width: 430px;
     text-align: justify;
+    /*padding: 20px 25px;*/
+}
+.temp p {
+    line-height: 1.5;
+    text-indent: 1.5em;
 }
 .temp img {
     max-width: 100%;
@@ -273,10 +291,12 @@ body {
 }
 
 .bookread-close {
+    position: absolute;
+    left: 20px;
+    top: 20px;
     display: inline-block;
     cursor: pointer;
     padding: 5px 10px;
     border: 1px solid #808080;
     border-radius: 3px;
-    margin: 20px 0 0 20px;
 }
