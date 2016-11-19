@@ -1,9 +1,112 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>L.F/肆叶 _Blog</title>
-  <link href="build/styles.css" rel="stylesheet"></head>
-  <body>
-  <script type="text/javascript" src="build/vendors.js"></script><script type="text/javascript" src="build/bundle.js"></script></body>
+    <title>Books</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="bookcase">
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book">
+                    <p class="name">素人</p>
+                    <p class="author">—肆叶</p>
+                </div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book">
+                    <p class="name">南庭旧事</p>
+                    <p class="author">—肆叶</p>
+                </div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+        <div class="bookbox">
+            <div class="bookwrap">
+                <div class="book"></div>
+            </div>
+        </div>
+    </div>
+    <script src="./assets/js/data.js"></script>
+    <script src="./assets/js/v-dom.js"></script>
+    <script src="./assets/js/page.js"></script>
+    <script>
+        var data = window.datas;
+        var Page = window.Page;
+
+        var books = Array.prototype.slice.call(document.querySelectorAll('.book'));
+        books.forEach(function(book) {
+            book.addEventListener('click', function(){
+                Page(data);
+            });
+        }); 
+    </script>
+</body>
 </html>
