@@ -12,6 +12,12 @@ body {
     font-size: 16px;
     color: #808080;
 }
+::-webkit-scrollbar {
+    width: 0;
+}
+
+
+/***************** bookcase start ***************/
 .bookcase {
     position: relative;
     left: 50%;
@@ -66,10 +72,24 @@ body {
     left: 0px; bottom: 5px;
     color: rgba(100,100,100,.2);
     font-size: 12px;
-    /*letter-spacing: 2px;*/
     writing-mode: vertical-rl;
 }
+/***************** bookcase end ***************/
 
+
+/***************** bookread start ***************/
+.bookread-wrap {
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+    transition: all 1s ease-in 0s;
+    transform: translate3d(100%, 0px, 0px);
+}
+.bookread-wrap.show {
+    transform: translate3d(0, 0px, 0px);
+}
 .bookread {
     position: relative;
     left: 50%;
@@ -109,12 +129,10 @@ body {
     left: 10px; bottom: 20px;
     color: rgba(100,100,100,.2);
     font-size: 22px;
-    /*letter-spacing: 2px;*/
     writing-mode: vertical-rl;
 }
 .bookread .bookwrap {
     transform-style: preserve-3d; 
-    transform: rotatex(5deg);  
 }
 .bookread .page {
     position: absolute;
@@ -124,7 +142,36 @@ body {
     transform-origin: left;
     transform-style: preserve-3d; 
 }
-.bookread .page.cover .front .content::before {
+.page > div {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform-style: preserve-3d;
+}
+.page .back {
+    transform: rotateY(-180deg);
+    visibility: hidden;
+}
+.page .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: justify;
+    font-size: 13px;
+    background: #fff;
+    border: 1px solid rgba(200,200,200,.2);
+    padding: 20px 25px;
+    overflow: auto;
+}
+.page .front .content {
+    border-width: 1px 1px 1px 0;
+}
+.page .back .content {
+    border-width: 1px 0 1px 1px;
+}
+.bookread .cover .front .content::before {
     position: absolute;
     left: 20px; top: 0;
     content: '';
@@ -132,6 +179,37 @@ body {
     height: 100%;
     box-shadow: 1px 0px 2px 0px rgba(100,100,100,.2);
 }
+.page .content img {
+    max-width: 100%;
+    cursor: zoom-in;
+}
+.page .content p {
+    line-height: 1.5;
+    text-indent: 1.5em;
+}
+.page.cover .content p {
+    text-indent: 0;
+}
+.page .content::before {
+    position: absolute;
+    right: 2px; top: 0;
+    content: '';
+    width: 1px;
+    height: 100%;
+    box-shadow: 2px 0px 0px 0px rgba(200,200,200,.2);
+}
+.bookread-close {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 5px 15px;
+    border: 1px solid #808080;
+}
+
+/*page status*/
 .bookread .page.front {
     animation: front 1s linear 1 forwards; 
 }
@@ -150,11 +228,6 @@ body {
 }
 .bookread .page.back .back {
     animation: hidden 1s linear 1 forwards; 
-}
-
-.back {
-    transform: rotateY(-180deg);
-    visibility: hidden;
 }
 
 @keyframes front {   
@@ -204,64 +277,10 @@ body {
         visibility: hidden;
     }   
 }  
-
-.page > div {
-    position: absolute;
-    left: 0; top: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    transform-style: preserve-3d;
-    /*overflow: hidden;*/
-}
-.page .content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: justify;
-    font-size: 13px;
-    background: #fff;
-    border: 1px solid rgba(200,200,200,.2);
-    padding: 20px 25px;
-    overflow: auto;
-}
-.page .front .content {
-    border-width: 1px 1px 1px 0;
-}
-.page .back .content {
-    border-width: 1px 0 1px 1px;
-}
-.page .content img {
-    max-width: 100%;
-    cursor: zoom-in;
-}
-.page .content p {
-    line-height: 1.5;
-    text-indent: 1.5em;
-}
-.page.cover .content p {
-    text-indent: 0;
-}
-.page .content::before {
-    position: absolute;
-    right: 2px; top: 0;
-    content: '';
-    width: 1px;
-    height: 100%;
-    box-shadow: 2px 0px 0px 0px rgba(200,200,200,.2);
-}
-.hidden {
-    visibility: hidden !important;
-}
-.visible {
-    visibility: visible !important;
-}
-
-::-webkit-scrollbar {
-    width: 0;
-}
+/***************** bookread end ***************/
 
 
+/***************** temp start ***************/
 .temp {
     position: fixed;
     left: 9999px; top: 0;
@@ -276,27 +295,4 @@ body {
 .temp img {
     max-width: 100%;
 }
-
-.bookread-wrap {
-    position: fixed;
-    left: 0; top: 0;
-    width: 100%;
-    height: 100%;
-    background: #f5f5f5;
-    transition: all 1s ease-in 0s;
-    transform: translate3d(100%, 0px, 0px);
-}
-.bookread-wrap.show {
-    transform: translate3d(0, 0px, 0px);
-}
-
-.bookread-close {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    display: inline-block;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 5px 15px;
-    border: 1px solid #808080;
-}
+/***************** temp end ***************/
