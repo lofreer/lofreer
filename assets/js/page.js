@@ -2,45 +2,94 @@
     
     var ce = window.CE;
 
-    function Page(data) {
-
-        if (!data) return;
-
-        var bookread, bookinfo, bookwrap, temp, tempitems;        
-
-        tempitems = data.books.map(function(book) {
-            return ce('div', {'class': 'temp-item'}, [ book.content ]);
-        });
-
-        temp = ce('div', {'class': 'temp'}, tempitems);
-
-        document.body.appendChild(temp);
-
-        var imgs = Array.prototype.slice.call(temp.querySelectorAll('img'));
-        var marks = imgs.map(function(item, i){
-                return i;
-            });
-
-        imgs.forEach(function(img) {
-            img.addEventListener('load', function(ev) {
-                marks.shift();
-            });
-        });
-
-        var loop = function() {
-            setTimeout(function(){
-                if (marks.length) {
-                    loop();
-                } else {
-                    init();
+    var utils = {
+        parse: function(els, height, pages) {
+            var h = 0,
+                i = 0,
+                len = els.length;
+            while(i < len) {
+                // h += (els[i].offsetHeight + parseInt(getComputedStyle(els[i])['marginTop']));
+                h += els[i].offsetHeight;
+                if (h > height) {
+                    break;s
                 }
-            }, 1000/60)
-        };
+                i++;
+            }
+            pages.push(els.splice(0,i));
+            
+            if (els.length) {
+                this.parse(els, height, pages);
+            }
+        }
+    };
 
-        loop();
+    function Page(data) {
+        if (!data) return;
+        this.bookcase(data);
+    }
 
-        function init() {
-            var books = [],
+    Page.prototype = {
+        bookcase: function(data) {
+            var self = this, length = 16 - data.length, bookcase;
+            
+            if (length > 0) {
+                for (var i = 0; i < length; i++) {
+                    data.push(null);
+                }
+            }
+
+            bookcase = ce('div', {'class': 'bookcase'}, data.map(function(book) {
+                return ce('div', {'class': 'bookbox'}, [
+                    ce('div', {'class': 'bookwrap'}, [
+                        book ? ce('div', {'class': 'book'}, [
+                            ce('p', {'class': 'name'}, [ book.info.name ]),
+                            ce('p', {'class': 'author'}, [ '—' + book.info.author ])
+                        ], {
+                            click: function() {
+                                self.bookread(book);
+                            }
+                        }) : null
+                    ])
+                ]);
+            }));
+
+            document.body.appendChild(bookcase);
+
+        },
+        bookread: function(data) {
+            var self = this, temp, tempitems;
+            tempitems = data.books.map(function(book) {
+                return ce('div', {'class': 'temp-item'}, [ book.content ]);
+            });
+
+            temp = ce('div', {'class': 'temp'}, tempitems);
+
+            document.body.appendChild(temp);
+
+            var imgs = Array.prototype.slice.call(temp.querySelectorAll('img'));
+            var marks = imgs.map(function(item, i){
+                    return i;
+                });
+
+            imgs.forEach(function(img) {
+                img.addEventListener('load', function(ev) {
+                    marks.shift();
+                });
+            });
+
+            (function loop(){
+                setTimeout(function(){
+                    if (marks.length) {
+                        loop();
+                    } else {
+                        self.readrender(tempitems, temp, data);
+                    }
+                }, 1000/60)
+            })();
+        },
+        readrender: function(tempitems, temp, data) {
+            var self = this,
+                books = [],
                 temps = [],
                 pages = [];
 
@@ -52,7 +101,7 @@
             });
 
             books.forEach(function(book){
-                parse(book, 660, temps);
+                utils.parse(book, 660, temps);
             });
             temp.parentNode.removeChild(temp);
             temps.forEach(function(item, i) {
@@ -66,8 +115,8 @@
             });
 
             var cover = [
-                ce('p', {'class': 'name'}, [data.info.name]),
-                ce('p', {'class': 'author'}, ['—' + data.info.author])
+                ce('p', {'class': 'name'}, [ data.info.name ]),
+                ce('p', {'class': 'author'}, [ '—' + data.info.author ])
             ]
             pages.unshift([cover, null]);
             pages.push([null, null]);
@@ -122,27 +171,8 @@
         }
     }
 
-    function parse(els, height, pages) {
-        var index = 0,
-            h = 0,
-            i = 0,
-            len = els.length;
-        while(i < len) {
-            // h += (els[i].offsetHeight + parseInt(getComputedStyle(els[i])['marginTop']));
-            h += els[i].offsetHeight;
-            if (h > height) {
-                index = i;
-                break;
-            }
-            i++;
-        }
-        pages.push(els.splice(0,i));
-        
-        if (els.length) {
-            parse(els, height, pages);
-        }
-    }
-
-    window.Page = Page;
+    window.Page = function(data) {
+        return new Page(data);
+    };
 
 })();
