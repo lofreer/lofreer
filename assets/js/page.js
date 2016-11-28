@@ -1,6 +1,6 @@
 (function(){    
     
-    var ce = window.CE;
+    var ce = Simple.createElement;
 
     var utils = {
         parse: function(els, height, pages) {
@@ -11,99 +11,116 @@
                 // h += (els[i].offsetHeight + parseInt(getComputedStyle(els[i])['marginTop']));
                 h += els[i].offsetHeight;
                 if (h > height) {
-                    break;s
+                    break;
                 }
                 i++;
             }
-            pages.push(els.splice(0,i));
+            var nodes = els.splice(0,i);
+            var nodeString = '';
+            nodes.forEach(function(node){
+                nodeString += node.outerHTML;
+            });
+            pages.push(nodeString);
+            // pages.push(nodes);
             
             if (els.length) {
                 this.parse(els, height, pages);
             }
+        },
+        urlParse: function(name,query) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"),r;
+            if(query){
+                r = query.match(reg);
+            }else{
+                r = window.location.search.substr(1).match(reg);
+            }
+            if(r!=null)return unescape(r[2]); return null;
         }
     };
+    
+    var isAdmin = utils.urlParse('account') === 'lofreer';
 
-    function Page(data) {
-        if (!data) return;
-        this.bookcase(data);
+    var data = window.datas;
+    var length = 16 - data.length;
+
+    if (length > 0) {
+        for (var i = 0; i < length; i++) {
+            data.push(null);
+        }
     }
 
-    Page.prototype = {
-        bookcase: function(data) {
-            var self = this, length = 16 - data.length, bookcase;
-            
-            if (length > 0) {
-                for (var i = 0; i < length; i++) {
-                    data.push(null);
-                }
+
+    // 临时dom
+    var bookTemp = Simple.createClass({
+
+        getInitialState: function() {
+            return {
+                data: null
             }
-
-            bookcase = ce('div', {'class': 'bookcase'}, data.map(function(book) {
-                return ce('div', {'class': 'bookbox'}, [
-                    ce('div', {'class': 'bookwrap'}, [
-                        book ? ce('div', {'class': 'book'}, [
-                            ce('p', {'class': 'name'}, [ book.info.name ]),
-                            ce('p', {'class': 'author'}, [ '—' + book.info.author ])
-                        ], {
-                            click: function() {
-                                self.bookread(book);
-                            }
-                        }) : null
-                    ])
-                ]);
-            }));
-
-            document.body.appendChild(bookcase);
-
         },
-        bookread: function(data) {
-            var self = this, temp, tempitems;
-            tempitems = data.books.map(function(book) {
+
+        handleShow: function(ev, data) {
+            this.setState({
+                data: data
+            })
+        },
+
+        handleBookRead: function(books) {
+            this.refs.bookRead.handleShow(null, books);
+        },
+
+        componentDidUpdate: function() {
+            var self = this;
+            var tempitems = Array.prototype.slice.call(document.querySelectorAll('.temp .temp-item'));
+           this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
+        },
+
+        render: function() {
+            var tempitems = this.state.data ? this.state.data.books.map(function(book) {
                 return ce('div', {'class': 'temp-item'}, [ book.content ]);
-            });
+            }) : null;
 
-            temp = ce('div', {'class': 'temp'}, tempitems);
+            var temp = ce('div', {'class': 'temp'}, tempitems);
 
-            document.body.appendChild(temp);
+            var element = ce('div', null, [
+                temp,
+                ce(bookRead, {ref: 'bookRead'})
+            ]);
+            return element;
+        }
 
-            var imgs = Array.prototype.slice.call(temp.querySelectorAll('img'));
-            var marks = imgs.map(function(item, i){
-                    return i;
-                });
+    });
 
-            imgs.forEach(function(img) {
-                img.addEventListener('load', function(ev) {
-                    marks.shift();
-                });
-            });
+    // 书籍展示
+    var bookRead = Simple.createClass({
 
-            (function loop(){
-                setTimeout(function(){
-                    if (marks.length) {
-                        loop();
-                    } else {
-                        self.readrender(tempitems, temp, data);
-                    }
-                }, 1000/60)
-            })();
+        getInitialState: function() {
+            return {
+                data: null
+            }
         },
-        readrender: function(tempitems, temp, data) {
-            var self = this,
-                books = [],
+
+        handleShow: function(ev, books, info) {
+            this.setState({
+                books: books,
+                info: info
+            });
+        },
+
+        render: function() {
+            var books = [],
                 temps = [],
                 pages = [];
-
-            tempitems.forEach(function(item) {
+            this.state.books && this.state.books.forEach(function(item) {
                 var childs = Array.prototype.slice.call(item.childNodes).filter(function(el) {
                     return el.nodeType === 1;
                 });
                 books.push(childs);
             });
-
             books.forEach(function(book){
                 utils.parse(book, 660, temps);
             });
-            temp.parentNode.removeChild(temp);
+           
             temps.forEach(function(item, i) {
                 if ((i+1)%2 === 0) {
                     pages.push(temps.slice(i-1, i-1+2));
@@ -113,36 +130,32 @@
                     pages.push(arr);
                 }
             });
-
             var cover = [
-                ce('p', {'class': 'name'}, [ data.info.name ]),
-                ce('p', {'class': 'author'}, [ '—' + data.info.author ])
+                ce('p', {'class': 'name'}, [this.state.info ? this.state.info.name : null ]),
+                ce('p', {'class': 'author'}, [ '—' + ( this.state.info ? this.state.info.author : null ) ])
             ]
-            pages.unshift([cover, null]);
-            pages.push([null, null]);
+            this.state.books && pages.unshift([cover, null]);
+            this.state.books && pages.push([null, null]);
 
             var zIndex = pages.length;
 
             bookinfo = ce('div', {'class': 'bookinfo'}, [
                 ce('div', {'class': 'content'}, [
-                    ce('p', {'class': 'preface'}, [ data.info.preface ]),
-                    ce('p', {'class': 'author'}, [ '—' + data.info.author ])
+                    ce('p', {'class': 'preface'}, [ this.state.info ? this.state.info.preface : null ]),
+                    ce('p', {'class': 'author'}, [ '—' + ( this.state.info ? this.state.info.author : null ) ])
                 ])
             ]);
-
             bookwrap = ce('div', {'class': 'bookwrap'}, pages.map(function(page, index) {
                 var className = 'page';
                 if (index === 0) className += ' cover';
                 return ce('div', {'class': className, 'style': 'z-index:' + (zIndex--)}, page.map(function(item, i) {
-                    return ce('div', {'class': i !== 1 ? 'front' : 'back'}, [
+                    return ce('div', {'class': i !== 1 ? 'front' : 'back', 'onclick': function(ev){
+                        var page = ev.target.parentNode.parentNode;                        
+                        page.classList.remove(i === 1 ? 'front' : 'back');
+                        page.classList.add(i === 1 ? 'back' : 'front');
+                    }}, [
                         ce('div', {'class': 'content'}, item)
-                    ], {
-                        click: function() {
-                            var page = this.parentNode;                        
-                            page.classList.remove(i === 1 ? 'front' : 'back');
-                            page.classList.add(i === 1 ? 'back' : 'front');
-                        }
-                    })
+                    ])
                 }))
             }));
 
@@ -151,28 +164,70 @@
                 bookwrap
             ]);
 
-            var bookreadClose = ce('div', {'class': 'bookread-close'},[ '关&nbsp;闭' ], {
-                click: function() {
-                    var parent = this.parentNode;
-                    parent.classList.remove('show');
-                    setTimeout(function(){
-                        parent.parentNode.removeChild(parent);
-                    }, 2000);
-                }
-            });
-
-            var bookreadWrap = ce('div', {'class': 'bookread-wrap'}, [ bookreadClose, bookread ]);
-
-            document.body.appendChild(bookreadWrap);
-
-            setTimeout(function(){
-                bookreadWrap.classList.add('show');
-            }, 200);
+            var bookreadClose = ce('div', {'class': 'bookread-close', 'onclick': this.handleShow.bind(this)},[ '关&nbsp;闭' ]);
+            var className = 'bookread-wrap';
+            if (this.state.books) className += ' show';
+            var bookreadWrap = ce('div', {'class': className}, [ bookreadClose, bookread ]);
+            return bookreadWrap;
         }
-    }
 
-    window.Page = function(data) {
-        return new Page(data);
-    };
+    });
+
+    // 书架展示
+    var bookCase = Simple.createClass({
+
+        getInitialState: function() {
+            return {
+                books: data,
+                book: null,
+                tempitems: []
+            }
+        },       
+
+        handleGetTemp: function(data) {
+            this.refs.bookTemp.handleShow(null, data);
+        },
+
+        render: function() {
+
+            var self = this;            
+            
+            var bookTemplate = function(data) {
+                return ce('div', {'class': 'book', 'onclick': self.handleGetTemp.bind(self, data)}, [
+                    ce('p', {'class': 'name'}, [ data.info.name ]),
+                    ce('p', {'class': 'author'}, [ '—' + data.info.author ])
+                ]);
+            }
+
+            var bookPlus = function() {
+                return ce('div', {'class': 'bookbox'}, [
+                    ce('div', {'class': 'bookwrap'}, [
+                        ce('div', {'class': 'bookplus', 'onclick': function(){
+                            alert('+')
+                        }},[])
+                    ])
+                ]);
+            }
+
+            var element = ce('div', {class: 'root'}, [
+                ce(bookTemp, {ref: 'bookTemp', data: this.state.book}),
+                ce('div', {'class': 'bookcase'}, this.state.books.map(function(book, index) {
+                    if (index + length === 16 && isAdmin) {
+                        return bookPlus();
+                    }
+                    return ce('div', {'class': 'bookbox'}, [
+                        ce('div', {'class': 'bookwrap'}, [
+                            book ? bookTemplate(book) : null
+                        ])
+                    ]);
+                }))                
+            ])
+            console.log(this)
+            return element;
+        }
+
+    });
+
+    Simple.render(ce(bookCase, {type: 'bookCase'}), document.body);    
 
 })();

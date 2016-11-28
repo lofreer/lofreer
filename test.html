@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>L.F/肆叶</title>
+    <link rel="stylesheet" href="./assets/css/initialization.css">
+    <style>
+        .box {
+            width: 500px;
+            height: 500px;
+            border: 1px solid #efefef;
+            margin: 50px auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <script src="./assets/js/simple.js"></script>
+    <script>
+        var ce = Simple.createElement;
+        var list = Simple.createClass({
+
+
+
+            render: function()  {
+                
+                var div = ce('div', {onclick: function(){
+                    alert('div')
+                }}, [
+                    ce('div', null, [
+                        ce('div', null, [
+                            ce('div', null, [
+                                '<div data-simpleid="2.1.1.1.0.0" class="content"><h2>晨跑</h2><p>清晨，在闹钟的催促中醒来，简单洗漱，换上轻装，欢快的溜出去。</p><p>若是天气好，还可以看到头顶一轮皎洁的明月，像是天然的路灯；迎着微风，顺着河边一路小跑，随着肢体摆动的旋律，用鼻腔，去感受空气的清新，和那阵阵的植物花香，用耳朵，去倾听鸟儿悦耳的欢叫声，一切的一切，都是那样的平静而又美好，或许，只有静下心来，才能与自然更无隙的沟通，不禁间陶醉在这如画般的境界里。</p><img src="http://upload-images.jianshu.io/upload_images/2546316-7554476cf33afc6a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><p>断断续续，坚持晨跑已4年有余，其目的，也从刚开始的健身，慢慢的变成抹不去的习惯，以至于若是间隔太久，便会感觉少了些什么。心情好时跑一跑，用以释放快乐，心情糟时跑一跑，用以缓解烦闷，不管何种情况，它总能还我平静的自己。</p></div>'
+                            ])
+                        ])
+                    ])
+                ]);
+
+                return div;
+                
+            }
+        });
+
+        Simple.render(ce(list), document.querySelector('.box'));
+    </script>
+</body>
+</html>
