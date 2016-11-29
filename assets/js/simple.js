@@ -167,8 +167,8 @@
 
             utils.each(props, function(value, key) {
                 if (/^on[A-Za-z]/.test(key)) {
-                    var eventType = key.replace('on', '');
-                    node.addEventListener(eventType, value, false);
+                    var eventType = key.toLowerCase().replace('on', '');
+                    self.addListener(node, eventType, value);
                 }
                 if (value && key !== 'children' && key !== 'ref' && !/^on[A-Za-z]/.test(key)) {
                     node.setAttribute(key, value);
@@ -185,10 +185,7 @@
                         if (ref) childrenRefs[ref] = childComponentInstance;                       
                     } else {
                          childComponentInstance._parentNode = node;
-                    }    
-
-                                  
-
+                    } 
                     childrenInstances.push(childComponentInstance);
                     var curRootID = self._rootNodeID + '.' + index;
                     var childNode = childComponentInstance.mountComponent(curRootID);
@@ -207,24 +204,55 @@
             this._updateDOMChildren(nextElement.props.children);
             this._currentElement = nextElement;
         },
+        addListener: function(element, event, listener) {
+            var self = this;
+            if (!this.hasOwnProperty('listeners')) {
+                this.listeners || (this.listeners = {});
+            };
+            self.listeners[event] || (self.listeners[event] = []);
+            self.listeners[event].push(listener);
+            element.addEventListener(event, listener);
+        },
+        removeListener: function(element, event, listener) {
+            var self = this, list;
+            list = self.listeners != null ? self.listeners[event] : void 0;
+            if (!list) return;
+            if (!listener) return delete self.listeners[event];
+            list.forEach(function(handler,i){
+                if (!(handler === listener)) return;
+                element.removeEventListener(event, handler)
+                list.splice(i, 1);
+                self.listeners[event] = list;
+            });
+        },
         _updateDOMProperties: function(lastProps, nextProps) {
+            var self = this;
             var propKey; 
-
             for (propKey in lastProps) {
                 if (nextProps.hasOwnProperty(propKey) || !lastProps.hasOwnProperty(propKey)) {
                     continue;
                 }
                 if (/^on[A-Za-z]/.test(propKey)) {
-                    var eventType = propKey.replace('on', '');
-                    // 事件更新
+                    var eventType = propKey.toLowerCase().replace('on', '');
+                    // 事件删除
+                    self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
                 }
                 this._nativeNode.removeAttribute(propKey);
             }
             for (propKey in nextProps) {
-                if (nextProps[propKey] === lastProps[propKey]) return;
                 if (/^on[A-Za-z]/.test(propKey)) {
-                    var eventType = propKey.replace('on', '');
+                    var eventType = propKey.toLowerCase().replace('on', '');
                     // 事件更新
+                    if (lastProps[propKey]) {
+                        if (!nextProps[propKey]) {
+                            self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
+                        } else if (nextProps[propKey].toString() !== lastProps[propKey].toString()) {
+                            self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
+                            self.addListener(self._nativeNode, eventType, nextProps[propKey]);
+                        }
+                    } else {
+                        self.addListener(self._nativeNode, eventType, nextProps[propKey]);
+                    }
                     continue;
                 }
                 if (propKey === 'children' || propKey === 'ref') continue;
@@ -285,9 +313,6 @@
                             fromIndex: prevChild._mountIndex,
                             toIndex: null
                         });
-                        if (prevChild._rootNodeID) {
-                            // 去除监听事件
-                        }
                         lastIndex = Math.max(prevChild._mountIndex, lastIndex);
                     }
 
@@ -313,9 +338,6 @@
                         fromIndex: prevChildren[key]._mountIndex,
                         toIndex: null
                     });
-                    if (prevChildren[key].rootNodeID) {
-                        // 事件处理
-                    }
                 }
             }
         },
@@ -326,7 +348,7 @@
                 if (update.type === UPDATE_TYPES.MOVE_EXISTING || update.type === UPDATE_TYPES.REMOVE_NODE) {
                     var updatedIndex = update.fromIndex;
                     var updatedChild = update.parentNode.childNodes[updatedIndex];
-                    var parentID = update.parentID;
+                    var parentID = update.parentId;
 
                     initialChildren[parentID] = initialChildren[parentID] || [];
                     initialChildren[parentID][updatedIndex] = updatedChild;
@@ -406,8 +428,7 @@
             beforeChild ? parentNode.insertBefore(childNode, beforeChild) : parentNode.insertBefore(childNode, null);
         } else {
             beforeChild ? parentNode.insertAdjacentHTML('afterBegin', childNode) : parentNode.insertAdjacentHTML('beforeend', childNode);
-        }
-        
+        }        
     }
 
     // 自定义类模块

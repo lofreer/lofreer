@@ -72,7 +72,7 @@
         componentDidUpdate: function() {
             var self = this;
             var tempitems = Array.prototype.slice.call(document.querySelectorAll('.temp .temp-item'));
-           this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
+            this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
         },
 
         render: function() {
@@ -173,6 +173,7 @@
 
     });
 
+    var num = 0;
     // 书架展示
     var bookCase = Simple.createClass({
 
@@ -209,7 +210,7 @@
                 ]);
             }
 
-            var element = ce('div', {class: 'root'}, [
+            var root = ce('div', {class: 'root'}, [
                 ce(bookTemp, {ref: 'bookTemp', data: this.state.book}),
                 ce('div', {'class': 'bookcase'}, this.state.books.map(function(book, index) {
                     if (index + length === 16 && isAdmin) {
@@ -220,10 +221,10 @@
                             book ? bookTemplate(book) : null
                         ])
                     ]);
-                }))                
+                }))
             ])
             console.log(this)
-            return element;
+            return root;
         }
 
     });
