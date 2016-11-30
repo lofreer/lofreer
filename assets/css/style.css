@@ -345,9 +345,25 @@ body {
     transform: translate3d(0, 0px, 0px);
 }
 
-.book-toolbar .editor-toolbar {
-	background: #efefef;
+.book-toolbar {
+    display: flex;
+    border-bottom: 1px solid #d9d9d9;
 }
+.book-toolbar .handles {
+    flex: 1;
+    line-height: 40px;
+    text-align: right;
+}
+.book-toolbar .handles .button {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0 20px;
+}
+.book-toolbar .button:hover {
+	color: #fff;
+	background: #555;
+}
+
 .book-editor {
     display: flex;
     flex-direction: column;
@@ -379,3 +395,69 @@ body {
     height: 100%;
 }
 /***************** editor end ***************/
+
+/***************** model start ***************/
+.book-model {
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,.2);
+    display: none;
+}
+.book-model.show {
+    display: block;
+}
+.book-model .model-content {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 20px;
+}
+.model-content .model-title {
+    line-height: 1.5;
+    border-bottom: 1px solid #dfdfdf;
+    margin-bottom: 20px;
+}
+.model-content .input-box {
+    margin-bottom: 20px;
+}
+.model-content .input-box label {
+    display: inline-block;
+    line-height: 30px;
+    vertical-align: top;
+}
+.model-content .input-box input {
+    width: 300px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    padding: 0 10px;
+}
+.model-content .input-box textarea {
+    width: 300px;
+    height: 100px;
+    resize: vertical;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.book-model .model-handlers {
+    text-align: center;
+    margin-top: 20px;
+}
+.model-handlers .model-button {
+    display: inline-block;
+    width: 80px;
+    line-height: 30px;
+    cursor: pointer;
+    border: 1px solid #dfdfdf;    
+    border-radius: 3px;
+    margin: 0 10px;
+}
+/***************** model end ***************/

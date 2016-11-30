@@ -47,36 +47,161 @@
         for (var i = 0; i < length; i++) {
             data.push(null);
         }
-    }
+    }    
 
+    var addBook = Simple.createClass({
+        getInitialState: function() {
+            return {   
+                name: '',
+                author: '',
+                preface: '',             
+                visible: false
+            }
+        },
+
+        handleShow: function(ev, visible) {
+            this.setState({
+                visible: visible
+            });
+        },
+
+        handleContentChange: function(ev) {
+            var element = ev.target,
+                type = element.getAttribute('data-type');
+                value = element.value;
+            var data = {};
+            data[type] = value;
+            this.setState(data);
+        },
+
+        handleContentSave: function() {
+            this.setState({
+                visible: false
+            })
+            this.props.callback(this.state);
+        },
+
+        render: function() {
+            var self = this;
+
+            var modelTitle = ce('div', {'class': 'model-title'}, [
+                '新增书籍'
+            ]);
+
+
+            var infoBox = ce('div', {'class': 'book-content'}, [
+                ce('div', {'class': 'input-box'}, [
+                    ce('label', null, ['书籍名称：']),
+                    ce('input', {'class': 'book-name', 'data-type': 'name', oninput: self.handleContentChange.bind(self)})
+                ]),
+                ce('div', {'class': 'input-box'}, [
+                    ce('label', null, ['书籍作者：']),
+                    ce('input', {'class': 'book-author', 'data-type': 'author', oninput: self.handleContentChange.bind(self)})
+                ]),
+                ce('div', {'class': 'input-box'}, [
+                    ce('label', null, ['书籍序言：']),
+                    ce('textarea', {'class': 'book-preface', 'data-type': 'preface', oninput: self.handleContentChange.bind(self)})
+                ])
+            ]);
+
+            var handlers = ce('div', {'class': 'model-handlers'}, [
+                ce('div', {'class': 'model-button', onclick: this.handleContentSave.bind(self)}, ['确定']),
+                ce('div', {'class': 'model-button', onclick: self.handleShow.bind(self, null, false)}, ['取消'])
+            ])
+
+            var className = 'book-model';
+            if (this.state.visible) className += ' show';
+            return ce('div', {'class': className}, [
+                ce('div', {'class': 'model-content'}, [
+                    modelTitle,
+                    infoBox,
+                    handlers
+                ])
+            ]);
+        }
+    });
+
+    var edit = Simple.createClass({
+        getInitialState: function() {
+            return {
+                title: '无标题文章',
+                content: '',
+                visible: false
+            }
+        },
+
+        componentDidMount: function() {
+             Edit.getEditor('editor', {
+                toolbarWrap: '#book-toolbar',
+                toolbars: ['bold', 'italic', 'underline', 'strikethrough', 'quotes', 'h1', 'h2', 'h3', 'h4', 'indent', 'outdent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'createlink', 'insertimage', 'insertvideo', 'undo', 'redo']
+            });
+        },
+
+        handleShow: function(ev, visible) {
+            this.setState({
+                visible: visible
+            });
+        },
+
+        handleSaveTitle: function(ev) {
+            this.setState({
+                title: ev.target.value
+            });
+        },
+
+        handleSaveContent: function() {
+            
+        },
+
+        render: function() {
+            var className = 'editor-wrap';
+            if (this.state.visible) className += ' show';
+            return ce('div', {'class': className}, [
+                ce('div', {'id': 'book-toolbar','class': 'book-toolbar'}, [
+                    ce('div', {'class': 'handles'}, [
+                        ce('div', {'class': 'button', onclick: null}, ['保存文章'])
+                    ])
+                ]),
+                ce('div', {'class': 'book-editor'}, [
+                    ce('div', {'class': 'book-title'}, [
+                        ce('input', {'id': 'book-title', 'type': 'text', 'placeholder': '文章标题', 'value': this.state.title, oninput: this.handleSaveTitle.bind(this)})
+                    ]),
+                    ce('div', {'id': 'editor', 'class': 'book-content'}, [this.state.content])
+                ])
+            ]);
+        }
+    });
 
     // 临时dom
     var bookTemp = Simple.createClass({
 
         getInitialState: function() {
             return {
-                data: null
+                data: null,
+                visible: false
             }
         },
 
-        handleShow: function(ev, data) {
+        handleShow: function(ev, data, visible) {
             this.setState({
-                data: data
+                data: data,
+                visible: visible
             })
         },
 
-        handleBookRead: function(books) {
-            this.refs.bookRead.handleShow(null, books);
-        },
-
         componentDidUpdate: function() {
-            var self = this;
-            var tempitems = Array.prototype.slice.call(document.querySelectorAll('.temp .temp-item'));
-            this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
+            if (this.state.visible) {
+                var self = this;
+                var tempitems = Array.prototype.slice.call(document.querySelectorAll('.temp .temp-item'));
+                this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
+                this.setState({
+                    visible: false
+                });
+            }            
         },
 
         render: function() {
-            var tempitems = this.state.data ? this.state.data.books.map(function(book) {
+            var tempitems = (this.state.data && this.state.visible) ? this.state.data.books.map(function(book) {
                 return ce('div', {'class': 'temp-item'}, [ book.content ]);
             }) : null;
 
@@ -179,14 +304,42 @@
 
         getInitialState: function() {
             return {
-                books: data,
+                books: window.datas,
+                bookLength: length,
                 book: null,
                 tempitems: []
             }
         },       
 
         handleGetTemp: function(data) {
-            this.refs.bookTemp.handleShow(null, data);
+            this.refs.bookTemp.handleShow(null, data, true);
+        },
+
+        handleEditor: function() {
+            this.refs.editor.handleShow(null, true);
+        },
+
+        handleAddBook: function() {
+            this.refs.addBook.handleShow(null, true);
+        },
+
+        handleAddBookSave: function(data) {
+            var index = this.state.books.indexOf(null);
+            var book = {
+                books: [],
+                info: {
+                    author: data.author,
+                    name: data.name,
+                    preface: data.preface
+                }
+            };
+
+            var tempData = this.state.books.slice();
+            tempData.splice(index, 1, book);
+            this.setState({
+                books: tempData,
+                bookLength: 16 - index - 1
+            });
         },
 
         render: function() {
@@ -203,17 +356,14 @@
             var bookPlus = function() {
                 return ce('div', {'class': 'bookbox'}, [
                     ce('div', {'class': 'bookwrap'}, [
-                        ce('div', {'class': 'bookplus', 'onclick': function(){
-                            alert('+')
-                        }},[])
+                        ce('div', {'class': 'bookplus', 'onclick': self.handleAddBook.bind(self)})
                     ])
                 ]);
             }
-
             var root = ce('div', {class: 'root'}, [
                 ce(bookTemp, {ref: 'bookTemp', data: this.state.book}),
                 ce('div', {'class': 'bookcase'}, this.state.books.map(function(book, index) {
-                    if (index + length === 16 && isAdmin) {
+                    if (index + self.state.bookLength === 16 && isAdmin) {
                         return bookPlus();
                     }
                     return ce('div', {'class': 'bookbox'}, [
@@ -221,7 +371,9 @@
                             book ? bookTemplate(book) : null
                         ])
                     ]);
-                }))
+                })),
+                ce(addBook, {ref: 'addBook', callback: self.handleAddBookSave.bind(self)}),
+                ce(edit, {ref: 'editor'})
             ])
             console.log(this)
             return root;

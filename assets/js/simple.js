@@ -244,12 +244,8 @@
                     var eventType = propKey.toLowerCase().replace('on', '');
                     // 事件更新
                     if (lastProps[propKey]) {
-                        if (!nextProps[propKey]) {
-                            self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
-                        } else if (nextProps[propKey].toString() !== lastProps[propKey].toString()) {
-                            self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
-                            self.addListener(self._nativeNode, eventType, nextProps[propKey]);
-                        }
+                        self.removeListener(self._nativeNode, eventType, lastProps[propKey]);
+                        self.addListener(self._nativeNode, eventType, nextProps[propKey]);
                     } else {
                         self.addListener(self._nativeNode, eventType, nextProps[propKey]);
                     }
@@ -489,12 +485,12 @@
                 prevComponentInstance.receiveComponent(nextRenderedElement);
                 self._instance.refs = {};
                 utils.each(this._renderedComponent._childrenRefs, function(value, key) {
-                if (value instanceof SimpleCompositeComponent) {
-                    self._instance.refs[key] = value._instance;
-                } else {
-                    self._instance.refs[key] = value._nativeNode;
-                }
-            });
+                    if (value instanceof SimpleCompositeComponent) {
+                        self._instance.refs[key] = value._instance;
+                    } else {
+                        self._instance.refs[key] = value._nativeNode;
+                    }
+                });
                 inst.componentDidUpdate && inst.componentDidUpdate();
             } else {
                  if (utils.isString(nextRenderedElement)) {
