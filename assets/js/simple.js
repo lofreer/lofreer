@@ -182,16 +182,18 @@
                     childComponentInstance._mountIndex = index;
                     if (!utils.isString(child) && !utils.isNumber(child)) {
                         var ref = child.props['ref'];
-                        if (ref) childrenRefs[ref] = childComponentInstance;                       
+                        if (ref) childrenRefs[ref] = childComponentInstance;                
                     } else {
                          childComponentInstance._parentNode = node;
                     } 
                     childrenInstances.push(childComponentInstance);
                     var curRootID = self._rootNodeID + '.' + index;
                     var childNode = childComponentInstance.mountComponent(curRootID);
+                    utils.each(childComponentInstance._childrenRefs, function(value, key) {
+                        childrenRefs[key] = value;
+                    });
                     childNode && (childNode instanceof HTMLElement) ? node.appendChild(childNode) : node.insertAdjacentHTML('beforeend', childNode);
-                }
-                
+                }                
             });
             this._renderedChildren = childrenInstances;
             this._childrenRefs = childrenRefs;
@@ -226,8 +228,7 @@
             });
         },
         _updateDOMProperties: function(lastProps, nextProps) {
-            var self = this;
-            var propKey; 
+            var self = this, propKey; 
             for (propKey in lastProps) {
                 if (nextProps.hasOwnProperty(propKey) || !lastProps.hasOwnProperty(propKey)) {
                     continue;
@@ -239,6 +240,7 @@
                 }
                 this._nativeNode.removeAttribute(propKey);
             }
+
             for (propKey in nextProps) {
                 if (/^on[A-Za-z]/.test(propKey)) {
                     var eventType = propKey.toLowerCase().replace('on', '');
@@ -273,14 +275,18 @@
             var prevChildren = flattenChildren(this._renderedChildren);
             var nextChildren = generateComponentChildren(prevChildren, nextChildrenElements);
             this._renderedChildren = [];
-            this._childrenRefs = {};
+            var childrenRefs = {};
             utils.each(nextChildren, function(instance) {
-                self._renderedChildren.push(instance);
+                self._renderedChildren.push(instance);     
                 if (!utils.isString(instance._currentElement) && !utils.isNumber(instance._currentElement)) {
                     var ref = instance._currentElement.props['ref'];
-                    if (ref) self._childrenRefs[ref] = instance;
-                }                
+                    if (ref) childrenRefs[ref] = instance;
+                    instance._childrenRefs && utils.each(instance._childrenRefs, function(value, key) {
+                        childrenRefs[key] = value;
+                    });
+                }                           
             });
+            this._childrenRefs = childrenRefs;
 
             var lastIndex = 0;
             var nextIndex = 0;
@@ -293,7 +299,7 @@
                 var nextChild = nextChildren[key];
                 if (prevChild === nextChild) {
                     prevChild._mountIndex < lastIndex && diffQueue.push({
-                        parentId: this._rootNodeId,
+                        parentID: this._rootNodeID,
                         parentNode: this._nativeNode,
                         type: UPDATE_TYPES.MOVE_EXISTING,
                         fromIndex: prevChild._mountIndex,
@@ -303,7 +309,7 @@
                 } else {
                     if (prevChild) {
                         diffQueue.push({
-                            parentId: this._rootNodeID,
+                            parentID: this._rootNodeID,
                             parentNode: this._nativeNode,
                             type: UPDATE_TYPES.REMOVE_NODE,
                             fromIndex: prevChild._mountIndex,
@@ -313,7 +319,7 @@
                     }
 
                     diffQueue.push({
-                        parentId: this._rootNodeID,
+                        parentID: this._rootNodeID,
                         parentNode: this._nativeNode,
                         type: UPDATE_TYPES.INSERT_NODE,
                         fromIndex: null,
@@ -328,7 +334,7 @@
             for (key in prevChildren) {
                 if (prevChildren.hasOwnProperty(key) && !(nextChildren && nextChildren.hasOwnProperty(key))) {
                     diffQueue.push({
-                        parentId: this._rootNodeID,
+                        parentID: this._rootNodeID,
                         parentNode: this._nativeNode,
                         type: UPDATE_TYPES.REMOVE_NODE,
                         fromIndex: prevChildren[key]._mountIndex,
@@ -344,7 +350,7 @@
                 if (update.type === UPDATE_TYPES.MOVE_EXISTING || update.type === UPDATE_TYPES.REMOVE_NODE) {
                     var updatedIndex = update.fromIndex;
                     var updatedChild = update.parentNode.childNodes[updatedIndex];
-                    var parentID = update.parentId;
+                    var parentID = update.parentID;
 
                     initialChildren[parentID] = initialChildren[parentID] || [];
                     initialChildren[parentID][updatedIndex] = updatedChild;
@@ -454,13 +460,13 @@
             var renderedComponentInstance = instantiateSimpleComponent(renderedElement);
             this._renderedComponent = renderedComponentInstance; 
             this._nativeNode = renderedComponentInstance.mountComponent(this._rootNodeID);
-
             utils.each(this._renderedComponent._childrenRefs, function(value, key) {
                 if (value instanceof SimpleCompositeComponent) {
                     self._instance.refs[key] = value._instance;
                 } else {
                     self._instance.refs[key] = value._nativeNode;
                 }
+
             });
             Simple.on('mountReady', function() {
                 inst.componentDidMount && inst.componentDidMount();

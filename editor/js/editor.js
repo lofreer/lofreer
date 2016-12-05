@@ -682,8 +682,8 @@
 				'<head><meta charset=\'UTF-8\'><link rel=\'stylesheet\' href=\'\'>',
 				'<style>',
 					'html,body {margin:0; padding:0; word-wrap:break-word; cursor:text; height:100%;}',
-					'body {padding: 8px; font-family: sans-serif; font-size: 16px;box-sizing:border-box;}',
-					'p {margin: 5px 0}',
+					'body {padding: 8px; font-family: \'Helvetica Neue\',Helvetica,\'PingFang SC\',\'Hiragino Sans GB\',\'Microsoft YaHei\',\'微软雅黑\',Arial,sans-serif; font-size: 16px;color:#2f2f2f;box-sizing:border-box;}',
+					'p {line-height: 1.4;margin: 10px 0;}',
 					'.editor-floatmenu{position:absolute;background:rgba(51,51,51,.9);;border:1px solid #f0f3f6;line-height:26px;border-radius:4px;overflow:hidden;}',
 					'.editor-floatmenu>span{display:inline-block;padding:0 10px;cursor:pointer;color:#fff;font-size:12px;}',
 					'.editor-floatmenu>span:hover{background:rgba(51,51,51,.9);}',
@@ -781,7 +781,7 @@
 				self.emit('contentchange');
 				caches[self.key].value = val;
 			};
-			self.focus();
+			self.options.focus && self.focus();
 		},
 		// 命令执行
 		callCmdFn: function(fnName, args) {

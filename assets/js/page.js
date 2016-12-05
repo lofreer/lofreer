@@ -35,6 +35,9 @@
                 r = window.location.search.substr(1).match(reg);
             }
             if(r!=null)return unescape(r[2]); return null;
+        },
+        getContentText: function(html) {
+            return ('' + html).replace(/<[^>]*>|\n/g, '');
         }
     };
     
@@ -131,44 +134,133 @@
         },
 
         componentDidMount: function() {
-             Edit.getEditor('editor', {
+            Edit.getEditor('editor', {
+                focus: false,
                 toolbarWrap: '#book-toolbar',
-                toolbars: ['bold', 'italic', 'underline', 'strikethrough', 'quotes', 'h1', 'h2', 'h3', 'h4', 'indent', 'outdent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'createlink', 'insertimage', 'insertvideo', 'undo', 'redo']
+                toolbars: ['bold', 'italic', 'underline', 'strikethrough', 'quotes', 'heading', 'createlink', 'insertimage', 'insertvideo', 'undo', 'redo']
             });
         },
 
-        handleShow: function(ev, visible) {
-            this.setState({
-                visible: visible
-            });
+        componentDidUpdate: function() {
+            if (this.props.visible) {
+                Edit.getEditor('editor').setContent(this.props.chapter.content)
+            }
         },
 
-        handleSaveTitle: function(ev) {
-            this.setState({
-                title: ev.target.value
-            });
-        },
-
-        handleSaveContent: function() {
-            
+        handleSaveChapter: function(ev) {
+            this.props.callback(this.refs.title.value, Edit.getEditor('editor').getContent());
         },
 
         render: function() {
-            var className = 'editor-wrap';
-            if (this.state.visible) className += ' show';
-            return ce('div', {'class': className}, [
+            var chapter = this.props.chapter;
+            return ce('div', {'class': 'editor-wrap'}, [
+                ce('div', {'class': 'book-title'}, [
+                    ce('input', {'ref': 'title', 'id': 'book-title', 'type': 'text', 'placeholder': '文章标题', 'value': chapter ? chapter.title : '无标题文章', oninput: this.handleSaveChapter.bind(this)})
+                ]),
                 ce('div', {'id': 'book-toolbar','class': 'book-toolbar'}, [
                     ce('div', {'class': 'handles'}, [
                         ce('div', {'class': 'button', onclick: null}, ['保存文章'])
                     ])
                 ]),
-                ce('div', {'class': 'book-editor'}, [
-                    ce('div', {'class': 'book-title'}, [
-                        ce('input', {'id': 'book-title', 'type': 'text', 'placeholder': '文章标题', 'value': this.state.title, oninput: this.handleSaveTitle.bind(this)})
-                    ]),
-                    ce('div', {'id': 'editor', 'class': 'book-content'}, [this.state.content])
+                ce('div', {'id': 'editor', 'class': 'book-content'})
+            ]);
+        }
+    });
+
+    var chapter = Simple.createClass({
+
+        getInitialState: function() {
+            return {
+                data: null,
+                visible: false,
+                key: 0,
+                chapter: null
+            }
+        },
+
+        handleShow: function(ev, visible, data) {            
+            this.setState({
+                visible: visible,
+                data: data || this.state.data,
+                chapter: (data && data.book[this.state.key]) || this.state.chapter
+            });
+        },
+
+        handleChapterChange: function(key) {
+            this.setState({
+                key: key,
+                chapter: this.state.data.book[key]
+            });
+        },
+
+        handleAddChapter: function(ev, isAfter) {
+            var book = this.state.data.book.slice();
+            var newChapter = {
+                title: '无标题文章',
+                content: ''
+            };
+            isAfter ? book.push(newChapter) : book.unshift(newChapter);            
+            this.setState({
+                data: {
+                    info: this.state.data.info,
+                    book: book
+                },
+                chapter: newChapter,
+                key: isAfter ? book.length - 1 : 0
+            })
+        },
+
+        handleSaveChapter: function(title, content) {
+            var book = this.state.data.book.slice();
+            var newChapter = {
+                title: title,
+                content: content
+            };
+            book[this.state.key] = newChapter;
+            this.setState({
+                data: {
+                    info: this.state.data.info,
+                    book: book
+                },
+                chapter: newChapter
+            })
+        },
+
+        render: function() {
+            var self = this;
+            var data = this.state.data;
+
+            var chapterClose = ce('div', {'class': 'bookread-close', 'onclick': this.handleShow.bind(this)},[ '关&nbsp;闭' ]);
+
+            var addChapterBefore = ce('div', {'class': 'add-chapter', onclick: this.handleAddChapter.bind(this)}, ['新建文章']);
+            var addChapterAfter = ce('div', {'class': 'add-chapter', onclick: this.handleAddChapter.bind(this, null, true)}, ['新建文章']);
+
+            var chapterList = ce('ul', {'class': 'chapter-list'}, data ? data.book.map(function(chapter, index){
+                var className = 'chapter-item';
+                if (self.state.key === index) className += ' active';
+                return ce('li', {'class': className, onclick: self.handleChapterChange.bind(self, index)}, [
+                    ce('h3', {'class': 'chapter-title'}, [ chapter.title ]),
+                    ce('p', {'class': 'chapter-content'}, [ utils.getContentText(chapter.content) || ' '])
+                ]);
+            }) : null);
+
+            var chapter = ce('div', {'class': 'chapter'}, [
+                ce('div', {'class': 'left'}, [
+                    addChapterBefore,
+                    chapterList,
+                    addChapterAfter                    
+                ]),
+                ce('div', {'class': 'right'}, [
+                    ce(edit, {chapter: this.state.chapter, visible: this.state.visible, callback: this.handleSaveChapter.bind(this)})
                 ])
             ]);
+
+            var className = 'chapter-wrap';
+            if (this.state.visible) className += ' show';
+            return ce('div', {'class': className}, [
+                chapterClose,
+                chapter
+            ])
         }
     });
 
@@ -193,7 +285,7 @@
             if (this.state.visible) {
                 var self = this;
                 var tempitems = Array.prototype.slice.call(document.querySelectorAll('.temp .temp-item'));
-                this.refs.bookRead.handleShow(null, tempitems, this.state.data.info);
+                this.refs.bookRead.handleShow(null, true, tempitems, this.state.data.info);
                 this.setState({
                     visible: false
                 });
@@ -201,8 +293,11 @@
         },
 
         render: function() {
-            var tempitems = (this.state.data && this.state.visible) ? this.state.data.books.map(function(book) {
-                return ce('div', {'class': 'temp-item'}, [ book.content ]);
+            var tempitems = (this.state.data && this.state.visible) ? this.state.data.book.map(function(book) {
+                return ce('div', {'class': 'temp-item'}, [
+                    ce('h2', null, [book.title]),
+                    book.content
+                ]);
             }) : null;
 
             var temp = ce('div', {'class': 'temp'}, tempitems);
@@ -221,29 +316,32 @@
 
         getInitialState: function() {
             return {
-                data: null
+                visible: false,
+                book: null,
+                info: null
             }
         },
 
-        handleShow: function(ev, books, info) {
+        handleShow: function(ev, visible, book, info) {
             this.setState({
-                books: books,
+                visible: visible,
+                book: book,
                 info: info
             });
         },
 
         render: function() {
-            var books = [],
+            var book = [],
                 temps = [],
                 pages = [];
-            this.state.books && this.state.books.forEach(function(item) {
+            this.state.book && this.state.book.forEach(function(item) {
                 var childs = Array.prototype.slice.call(item.childNodes).filter(function(el) {
                     return el.nodeType === 1;
                 });
-                books.push(childs);
+                book.push(childs);
             });
-            books.forEach(function(book){
-                utils.parse(book, 660, temps);
+            book.forEach(function(chapter){
+                utils.parse(chapter, 660, temps);
             });
            
             temps.forEach(function(item, i) {
@@ -259,14 +357,14 @@
                 ce('p', {'class': 'name'}, [this.state.info ? this.state.info.name : null ]),
                 ce('p', {'class': 'author'}, [ '—' + ( this.state.info ? this.state.info.author : null ) ])
             ]
-            this.state.books && pages.unshift([cover, null]);
-            this.state.books && pages.push([null, null]);
-
+            this.state.book && pages.unshift([cover, null]);
+            this.state.book && pages.push([null, null]);
+            
             var zIndex = pages.length;
 
             bookinfo = ce('div', {'class': 'bookinfo'}, [
                 ce('div', {'class': 'content'}, [
-                    ce('p', {'class': 'preface'}, [ this.state.info ? this.state.info.preface : null ]),
+                    ce('p', {'class': 'preface'}, [ this.state.info ? this.state.info.preface : ' ' ]),
                     ce('p', {'class': 'author'}, [ '—' + ( this.state.info ? this.state.info.author : null ) ])
                 ])
             ]);
@@ -288,10 +386,10 @@
                 bookinfo,
                 bookwrap
             ]);
-
-            var bookreadClose = ce('div', {'class': 'bookread-close', 'onclick': this.handleShow.bind(this)},[ '关&nbsp;闭' ]);
+            
+            var bookreadClose = ce('div', {'class': 'bookread-close', 'onclick': this.handleShow.bind(this, null, false, this.state.book, this.state.info)},[ '关&nbsp;闭' ]);
             var className = 'bookread-wrap';
-            if (this.state.books) className += ' show';
+            if (this.state.visible) className += ' show';
             var bookreadWrap = ce('div', {'class': className}, [ bookreadClose, bookread ]);
             return bookreadWrap;
         }
@@ -309,18 +407,18 @@
                 book: null,
                 tempitems: []
             }
-        },       
+        }, 
 
         handleGetTemp: function(data) {
             this.refs.bookTemp.handleShow(null, data, true);
         },
 
-        handleEditor: function() {
-            this.refs.editor.handleShow(null, true);
-        },
-
         handleAddBook: function() {
             this.refs.addBook.handleShow(null, true);
+        },
+
+        handlechapter: function(data) {
+            this.refs.chapter.handleShow(null, true, data);
         },
 
         handleAddBookSave: function(data) {
@@ -347,7 +445,7 @@
             var self = this;            
             
             var bookTemplate = function(data) {
-                return ce('div', {'class': 'book', 'onclick': self.handleGetTemp.bind(self, data)}, [
+                return ce('div', {'class': 'book', 'onclick': isAdmin ? self.handlechapter.bind(self, data) : self.handleGetTemp.bind(self, data)}, [
                     ce('p', {'class': 'name'}, [ data.info.name ]),
                     ce('p', {'class': 'author'}, [ '—' + data.info.author ])
                 ]);
@@ -373,7 +471,15 @@
                     ]);
                 })),
                 ce(addBook, {ref: 'addBook', callback: self.handleAddBookSave.bind(self)}),
-                ce(edit, {ref: 'editor'})
+                ce(chapter, {ref: 'chapter'})
+                // ce('div', {ref:'div'}, [
+                //     ce('p', {ref:'p'}, [
+                //         ce('span', {ref:'span'})
+                //     ])
+                // ]),
+                // ce('h1', {ref:'h1'}, [
+                //     ce('h2', {ref:'h2'})
+                // ]),
             ])
             console.log(this)
             return root;
@@ -381,6 +487,6 @@
 
     });
 
-    Simple.render(ce(bookCase, {type: 'bookCase'}), document.body);    
+    Simple.render(ce(bookCase, {type: 'bookCase'}), document.body);  
 
 })();
