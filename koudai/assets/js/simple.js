@@ -44,19 +44,19 @@
 
             if (typeof a === 'object') {
                 for (let p in a) {
-                if (!Object.prototype.hasOwnProperty.call(a, p)) {
-                    continue
-                }
-
-                if (a[p] === undefined) {
-                    if (b[p] !== undefined) {
-                    return false
+                    if (!Object.prototype.hasOwnProperty.call(a, p)) {
+                        continue
                     }
-                } else if (!Object.prototype.hasOwnProperty.call(b, p)) {
-                    return false
-                } else if (!deepEqual(a[p], b[p])) {
-                    return false
-                }
+
+                    if (a[p] === undefined) {
+                        if (b[p] !== undefined) {
+                        return false
+                        }
+                    } else if (!Object.prototype.hasOwnProperty.call(b, p)) {
+                        return false
+                    } else if (!deepEqual(a[p], b[p])) {
+                        return false
+                    }
                 }
 
                 return true
@@ -591,7 +591,8 @@
             element && (element instanceof HTMLElement) ? container.appendChild(element) : container.insertAdjacentHTML('beforeend', element);
             this.emit('mountReady');
             return element;
-        }
+        },
+        utils: utils
     }
 
     utils.extend(Simple, Events);

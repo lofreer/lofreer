@@ -1,6 +1,7 @@
 (function(){    
     
-    var ce = Simple.createElement;
+    var ce = Simple.createElement;    
+    
 
     var utils = {
         parse: function(els, height, pages) {
@@ -486,6 +487,17 @@
         }
 
     });
+
+    var routes = {
+        path: '/',
+        component: bookCase,
+        childRoutes: [{
+            path: 'read',
+            component: bookTemp
+        }]
+    };
+
+    // Simple.render(ce(Router, {'history': 'history', 'routes': routes }, document.body);    
 
     Simple.render(ce(bookCase, {type: 'bookCase'}), document.body);  
 
