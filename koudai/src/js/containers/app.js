@@ -1,9 +1,10 @@
 import { Simple } from 'components';
+const ce = Simple.createElement;
 
 export default Simple.createClass({
     
     render: function() {
-        return 'lessonn'
+        return this.props.children
     }
 
 }); 

@@ -20,7 +20,8 @@ module.exports= {
 	},
 	resolve: {
 		alias: {
-            'components': path.resolve('./src/js/components')
+            'components': path.resolve('./src/js/components'),
+			'containers': path.resolve('./src/js/containers')
         },
 	    extensions: ['', '.js']
 	},

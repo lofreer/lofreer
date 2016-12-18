@@ -135,6 +135,7 @@ export default Simple.createClass({
             path = location.pathname;
         } else {
             path = location.hash.replace(/^#/, '');
+            if (!path) location.hash = '/';
         }
         if (path === '') path = '/';
         this.state = this.matchRoutes(path);
@@ -148,10 +149,12 @@ export default Simple.createClass({
 
         this.listen(function(location){
             self.setState(self.matchRoutes(location));
-        });
-        this.updateLocation();
-
-        this.isActive();       
+        }); 
+        
+        this.isActive();   
+        setTimeout(function() {
+            self.updateLocation(); 
+        })
     },
     
     render: function() {

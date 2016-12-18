@@ -1,0 +1,15 @@
+.search-wrap {
+    display: flex;
+
+    .search-input {
+        flex: 1;
+    }
+    .search-cancel {
+        transform: translateX(100%);
+        transition: all .5s;
+
+        &.show {
+            transform: translateX(0);
+        }
+    }
+}
