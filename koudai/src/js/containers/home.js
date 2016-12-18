@@ -13,10 +13,17 @@ export default Simple.createClass({
     handleSearch: function(search) {
         this.setState({
             isSearch: search
-        })
+        });
+        if (search) {
+            document.title = '口袋题库-搜索';
+        } else {
+            document.title = '口袋题库-课堂';
+        }
     },
     
     render: function() {
+
+        document.title = '口袋题库-课堂';
 
         let self = this;
 

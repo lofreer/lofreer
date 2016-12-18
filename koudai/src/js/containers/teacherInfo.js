@@ -7,6 +7,8 @@ export default Simple.createClass({
     
     render: function() {
 
+        document.title = '口袋题库-名师详情';
+
         return ce('div', {class: 'class-wrap'}, [
            'teacherInfo'
         ])
