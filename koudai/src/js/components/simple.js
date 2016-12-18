@@ -119,7 +119,7 @@ function instantiateSimpleComponent(node) {
         return new SimpleDOMComponent(node);
     } else if (utils.isObject(node) && utils.isFunction(node.type)) {
         return new SimpleCompositeComponent(node);
-    }
+    } 
 }    
 
 // 文本节点模块

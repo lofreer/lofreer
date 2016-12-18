@@ -10,7 +10,7 @@ export default Simple.createClass({
 
         let classItem = function(data) {
             return ce('li', {class: 'class-item'}, [
-                ce('a', {href: `#/${data.id}/info`}, [
+                ce('a', {href: `#/${data.id}`}, [
                     ce('div', {class: 'img-box'}, [
                         ce('img', {src: data.img})
                     ]),
