@@ -62,29 +62,35 @@ export default Simple.createClass({
         let personalizeList = [{
             title: '学长原创|政治选择题思维复现',
             describe: '同样是买肖8,学长做题思路是这样的精深',
-            cover: 'src/img/speech_1.jpg'
+            cover: 'src/img/speech_1.jpg',
+            id: 1
         }, {
             title: '学长原创|政治选择题思维复现',
             describe: '同样是买肖8,学长做题思路是这样的精深',
-            cover: 'src/img/speech_2.jpg'
+            cover: 'src/img/speech_2.jpg',
+            id: 2
         }, {
             title: '学长原创|政治选择题思维复现',
             describe: '同样是买肖8,学长做题思路是这样的精深',
-            cover: 'src/img/speech_3.jpg'
+            cover: 'src/img/speech_3.jpg',
+            id: 3
         }, {
             title: '学长原创|政治选择题思维复现',
             describe: '同样是买肖8,学长做题思路是这样的精深',
-            cover: 'src/img/speech_4.jpg'
+            cover: 'src/img/speech_4.jpg',
+            id: 4
         }]
         let personalize = ce('div', {class: 'personalize-wrap'}, [
             ce('h3', {class: 'chunk-title'}, [' - 为你定制 -']),
             ce('ul', {class: 'personalize-list'}, personalizeList.map(function(item){
                 return ce('li', {class: 'personalize-item'}, [
-                    ce('div', {class: 'img-box'}, [
-                        ce('img', {src: item.cover})
-                    ]),
-                    ce('p', {class: 'title'}, [item.title]),
-                    ce('p', {class: 'describe'}, [item.describe])
+                    ce('a', {href: '#/' + item.id}, [
+                        ce('div', {class: 'img-box'}, [
+                            ce('img', {src: item.cover})
+                        ]),
+                        ce('p', {class: 'title'}, [item.title]),
+                        ce('p', {class: 'describe'}, [item.describe])
+                    ])
                 ]);
             }))
         ]);
@@ -92,35 +98,42 @@ export default Simple.createClass({
         let teacherList = [{
             name: '张大莆',
             cover: 'src/img/person_1.jpg',
-            label: ['CEO', '吹水班']
+            label: ['CEO', '吹水班'],
+            id: 1
         }, {
             name: '张小喵',
             cover: 'src/img/person_2.jpg',
-            label: ['睡觉', '卖萌班']
+            label: ['睡觉', '卖萌班'],
+            id: 2
         }, {
             name: '博士后',
             cover: 'src/img/person_3.jpg',
-            label: ['设计', '美颜班']
+            label: ['设计', '美颜班'],
+            id: 3
         }, {
             name: '恒欣宋',
             cover: 'src/img/person_4.jpg',
-            label: ['产品', '规划班']
+            label: ['产品', '规划班'],
+            id: 4
         }, {
             name: '肆叶',
             cover: 'src/img/person_5.jpg',
-            label: ['狂魔', '梦想班']
+            label: ['狂魔', '梦想班'],
+            id: 5
         }]
         let teacher = ce('div', {class: 'teacher-wrap'}, [
             ce('h3', {class: 'chunk-title'}, [' - 名师推荐 -']),
             ce('ul', {class: 'teacher-list'}, teacherList.map(function(item){
                 return ce('li', {class: 'teacher-item'}, [
-                    ce('div', {class: 'img-box'}, [
-                        ce('img', {src: item.cover})
-                    ]),
-                    ce('p', {class: 'name'}, [item.name]),
-                    ce('div', {class: 'label-list'}, item.label.map(function(label){
-                        return ce('span', {class: 'label-item'}, [label]);
-                    }))
+                    ce('a', {href: '#/teacher/' + item.id}, [
+                        ce('div', {class: 'img-box'}, [
+                            ce('img', {src: item.cover})
+                        ]),
+                        ce('p', {class: 'name'}, [item.name]),
+                        ce('div', {class: 'label-list'}, item.label.map(function(label){
+                            return ce('span', {class: 'label-item'}, [label]);
+                        }))
+                    ])
                 ])
             }))
         ]);        
@@ -130,46 +143,53 @@ export default Simple.createClass({
             describe: '八年真题逐年讲解，刷3遍！',
             cover: 'src/img/speech_1.jpg',
             size: '1小时20分钟',
-            price: '369'
+            price: '369',
+            id: 1
         }, {
             title: '数学冲刺|真题逐年讲解',
             describe: '八年真题逐年讲解，刷3遍！',
             cover: 'src/img/speech_2.jpg',
             size: '1小时20分钟',
-            price: '129'
+            price: '129',
+            id: 2
         }, {
             title: '数学冲刺|真题逐年讲解',
             describe: '八年真题逐年讲解，刷3遍！',
             cover: 'src/img/speech_3.jpg',
             size: '1小时20分钟',
-            price: ''
+            price: '',
+            id: 3
         }, {
             title: '数学冲刺|真题逐年讲解',
             describe: '八年真题逐年讲解，刷3遍！',
             cover: 'src/img/speech_4.jpg',
             size: '1小时20分钟',
-            price: '99'
+            price: '99',
+            id: 4
         }, {
             title: '数学冲刺|真题逐年讲解',
             describe: '八年真题逐年讲解，刷3遍！',
             cover: 'src/img/speech_5.jpg',
             size: '1小时20分钟',
-            price: ''
+            price: '',
+            id: 5
         }]
         let hot = ce('div', {class: 'hot-wrap'}, [
             ce('h3', {class: 'chunk-title'}, [' - 热门推荐 -']),
             ce('ul', {class: 'hot-list'}, hotList.map(function(item){
                 return ce('li', {class: 'hot-item'}, [
-                    ce('div', {class: 'img-box'}, [
-                        ce('img', {src: item.cover})
-                    ]),
-                    ce('div', {class: 'info-box'}, [
-                        ce('h4', {class: 'title'}, [item.title]),
-                        ce('p', {class: 'describe'}, [item.describe]),
-                        ce('p', {class: 'time'}, [item.size])
-                    ]),
-                    ce('div', {class: 'price-box'},[
-                        ce('span', {class: 'price'}, [item.price || '免费'])
+                    ce('a', {href: '#/' + item.id}, [
+                        ce('div', {class: 'img-box'}, [
+                            ce('img', {src: item.cover})
+                        ]),
+                        ce('div', {class: 'info-box'}, [
+                            ce('h4', {class: 'title'}, [item.title]),
+                            ce('p', {class: 'describe'}, [item.describe]),
+                            ce('p', {class: 'time'}, [item.size])
+                        ]),
+                        ce('div', {class: 'price-box'},[
+                            ce('span', {class: 'price'}, [item.price || '免费'])
+                        ])
                     ])
                 ])
             })),
