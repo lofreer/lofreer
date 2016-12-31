@@ -65,81 +65,97 @@ export default Simple.createClass({
             window.location.hash = path;
         }
     },
-    // 拼装组件
+    // 异步请求
+    asyn: function(data, cb) {
+        return new Promise(function(resolve, reject) {
+            cb(data, function(value){
+                resolve(value);
+            })
+        });
+    },
+    // 解构组件
     getComponent: function(routes, state, components) {  
         routes = routes.slice();
         components = components || [];
         var route = routes.shift();
-        var self = this;
-        function asyn(data, cb) {
-            return new Promise(function(resolve, reject) {
-                cb(data, function(value){
-                    resolve(value);
-                })
-            });
-        }          
-
+        var self = this;        
+        
         if (route.component) {
             components.push(route.component);
             if (routes.length) {
                 this.getComponent(routes, state, components);
             } else {
-                if (route = route.indexRoute) {
-                    if (route.component) {
-                        components.push(route.component);
-                        state.routes.push(route);
-                        state.components = self.concatComponent(components, state);
-                        if (self.isReady) {
-                            self.setState(state);
-                        } else {
-                            self.state = state;
-                        }
-                    } else if (Simple.utils.isFunction(route.getComponent)) {
-                        asyn(state, route.getComponent).then(function(value){
-                            components.push(value);
-                            state.routes.push(route);
-                            state.components = self.concatComponent(components, state);
-                            self.setState(state);
-                        })
-                    }
-                } else {
-                    state.components = self.concatComponent(components, state);
-                    if (self.isReady) {
-                        self.setState(state);
-                    } else {
-                        self.state = state;
-                    }
-                }
+                self.routeRender(route, components, state);
             }
         } else if (Simple.utils.isFunction(route.getComponent)) {
-            asyn(state, route.getComponent).then(function(value){
+            self.asyn(state, route.getComponent).then(function(value){
                 components.push(value);
                 if (routes.length) {
                     self.getComponent(routes, state, components);
                 } else {
-                    if (route = route.indexRoute) {
-                        if (route.component) {
-                            components.push(route.component);
-                            state.routes.push(route);
-                            state.components = self.concatComponent(components, state);
-                            self.setState(state);
-                        } else if (Simple.utils.isFunction(route.getComponent)) {
-                            asyn(state, route.getComponent).then(function(value){
-                                components.push(value)
-                                state.routes.push(route);
-                                state.components = self.concatComponent(components, state);
-                                self.setState(state);
-                            })
-                        }
-                    } else {
-                        state.components = self.concatComponent(components, state);
-                        self.setState(state);
-                    }
+                    self.routeRender(route, components, state);
                 }
             })
         }
     },
-
+    // 路由渲染
+    routeRender(route, components, state) {
+        var self = this;
+        var indexRoute = route.indexRoute;
+        state.route = route;
+        if (indexRoute) {
+            if (indexRoute.component) {
+                components.push(indexRoute.component);
+                state.routes.push(indexRoute);
+                state.components = self.concatComponent(components, state);
+                if (self.isReady) {
+                    self.toSetState(indexRoute, state);
+                } else {
+                    self.state = state;
+                }                
+            } else if (Simple.utils.isFunction(indexRoute.getComponent)) {
+                self.asyn(state, indexRoute.getComponent).then(function(value){
+                    components.push(value);
+                    state.routes.push(indexRoute);
+                    state.components = self.concatComponent(components, state);
+                    if (self.isReady) {
+                        self.toSetState(indexRoute, state);
+                    } else {
+                        self.state = state;
+                    }    
+                })
+            }
+        } else {
+            state.components = self.concatComponent(components, state);
+            if (self.isReady) {
+                self.toSetState(route, state);
+            } else {
+                self.state = state;
+            }    
+        }
+    },
+    // 改变状态值
+    toSetState(route, state) {
+        var self = this;
+        var reg = this.state.reg;
+        if (reg && reg.test(state.location.pathname)) {
+            if (Simple.utils.isFunction(route.onChange)) {
+                route.onChange(Object.assign({}, this.state), state, function(){
+                    self.setState(state);
+                });
+            } else {
+                self.setState(state);
+            }
+        } else {
+            if (Simple.utils.isFunction(route.onEnter)) {
+                route.onEnter(state, function(){
+                    self.setState(state);
+                });
+            } else {
+                self.setState(state);
+            }
+        }
+    },
     // 组件拼装
     concatComponent: function(components, state) {
         components = components.slice();
@@ -152,11 +168,13 @@ export default Simple.createClass({
         }
         return component;
     },
-
     // 路由匹配
     matchRoutes: function(location){
         var self = this;
         var state = {};
+        state.location = {
+            pathname: location
+        };
         this.routes.some(function(route){
             if (route.reg.test(location)) {
                 var match = location.match(route.reg);
@@ -167,7 +185,8 @@ export default Simple.createClass({
                     });
                     state.params = params;
                 }
-                state.routes = route.routes;
+                state.routes = route.routes.slice();
+                state.reg = route.reg;
                 self.getComponent(route.routes, state);
                 return true;
             }
@@ -184,8 +203,6 @@ export default Simple.createClass({
             var routeObj = {};
             if (/^\//.test(route.path)) path = '';
             routeObj.path = path += route.path;
-            routeObj.component = route.component;
-            if (route.indexRoute) routeObj.indexRoute = route.indexRoute;
             childRoutes.push(route);
             routeObj.routes = arr.slice().concat(route);
             routeObj.reg = new RegExp('^' + path.replace(paramsReg, '(\\w+)') + '$');
@@ -197,7 +214,6 @@ export default Simple.createClass({
                 });
             }
             self.routes.push(routeObj);
-
             if (route.childRoutes) {
                 if (!/\/$/.test(path)) path += '/'
                 self.parseRoutes(route.childRoutes, path, childRoutes)

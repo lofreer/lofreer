@@ -1,7 +1,6 @@
 (function(){    
     
     var ce = Simple.createElement;    
-    
 
     var utils = {
         parse: function(els, height, pages) {

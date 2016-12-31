@@ -1,5 +1,5 @@
 import { Simple } from 'components';
-import datas from '../api/data';
+import datas from '../../api/data';
 
 
 const ce = Simple.createElement;
