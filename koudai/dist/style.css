@@ -1,3 +1,52 @@
+.list {
+  padding: 0 10px;
+}
+.list .item {
+  padding: 5px 0;
+  border-bottom: 1px solid #e8eaea;
+}
+.list .item a {
+  display: flex;
+}
+.list .item .img-box {
+  width: 28%;
+}
+.list .item img {
+  width: 100%;
+}
+.list .item .info-box {
+  flex: 1;
+  padding: 5px 10px;
+}
+.list .item .describe {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+.list .item .time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+.list .item .other-box {
+  display: flex;
+  align-items: center;
+  width: 60px;
+  text-align: center;
+}
+.list .item .pv {
+  border: 1px solid #e8eaea;
+}
+.info-wrap {
+  height: 100%;
+  background: red;
+  overflow: auto;
+}
+.chapter-wrap {
+  height: 100%;
+  background: blue;
+  overflow: auto;
+}
 /************** css reset start *****************/
 body,
 dl,

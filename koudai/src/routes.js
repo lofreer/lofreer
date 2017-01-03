@@ -21,27 +21,12 @@ export default function routes() {
                 });
             }
         }, {
-            path: 'room/:cid',
+            path: 'room/:cid/:type',
             getComponent: function(nextState, cb) {
                 return require.ensure([], (require) => {
                     cb(require('containers/class').default);
                 });
-            },
-            childRoutes: [{
-                path: 'info',
-                getComponent: function(nextState, cb) {
-                    return require.ensure([], (require) => {
-                        cb(require('containers/classInfo').default);
-                    });
-                }
-            }, {
-                path: 'chapter',
-                getComponent: function(nextState, cb) {
-                    return require.ensure([], (require) => {
-                        cb(require('containers/classChapter').default);
-                    });
-                }
-            }]
+            }
         }, {
             path: 'teacher/:tid',
             getComponent: function(nextState, cb) {

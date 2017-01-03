@@ -7,8 +7,14 @@ export { Router };
 import List from './list';
 export { List };
 
+import Search from './search';
+export { Search };
+
 import Select from './select';
 export { Select };
 
-import Search from './search';
-export { Search };
+import Info from './info';
+export { Info };
+
+import Chapter from './chapter';
+export { Chapter };

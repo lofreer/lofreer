@@ -36,11 +36,18 @@ export default Simple.createClass({
             ])
         })); 
 
+        let selects = ce('div', {class: 'select-lsit'}, [
+            ce(Select),
+            ce(Select),
+            ce(Select),
+            ce(Select)
+        ]);
+
         document.title = '口袋题库-全部课堂';
 
         return ce('div', {class: 'list-wrap'}, [
             types,
-            ce(Select),
+            selects,
             ce(List, {data: datas.list})
         ]);
     }
