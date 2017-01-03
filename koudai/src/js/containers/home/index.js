@@ -84,7 +84,7 @@ export default Simple.createClass({
             ce('h3', {class: 'chunk-title'}, [' - 为你定制 -']),
             ce('ul', {class: 'personalize-list'}, personalizeList.map(function(item){
                 return ce('li', {class: 'personalize-item'}, [
-                    ce('a', {href: '#/' + item.id}, [
+                    ce('a', {href: '#/room/' + item.id}, [
                         ce('div', {class: 'img-box'}, [
                             ce('img', {src: item.cover})
                         ]),
@@ -178,7 +178,7 @@ export default Simple.createClass({
             ce('h3', {class: 'chunk-title'}, [' - 热门推荐 -']),
             ce('ul', {class: 'hot-list'}, hotList.map(function(item){
                 return ce('li', {class: 'hot-item'}, [
-                    ce('a', {href: '#/' + item.id}, [
+                    ce('a', {href: '#/room/' + item.id}, [
                         ce('div', {class: 'img-box'}, [
                             ce('img', {src: item.cover})
                         ]),
@@ -193,7 +193,7 @@ export default Simple.createClass({
                     ])
                 ])
             })),
-            ce('a', {class: 'chunk-title', href: '#/all'}, ['查看全部'])
+            ce('a', {class: 'chunk-title', href: '#/class/all'}, ['查看全部'])
         ]);
 
         let advert = ce('div', {class: 'advert-wrap'}, [
@@ -203,7 +203,7 @@ export default Simple.createClass({
         ]);
 
         let all = ce('div', {class: 'all-wrap'}, [
-            ce('a', {href: '#/all'}, ['全部课堂'])
+            ce('a', {href: '#/class/all'}, ['全部课堂'])
         ]);
         return ce('div', {class: 'home-wrap'}, [
             search,

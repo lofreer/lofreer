@@ -4,8 +4,8 @@ export { App };
 import Home from './home';
 export { Home };
 
-import All from './all';
-export { All };
+import List from './list';
+export { List };
 
 import Class from './class';
 export { Class };

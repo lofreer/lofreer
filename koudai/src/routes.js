@@ -14,14 +14,14 @@ export default function routes() {
             }
         },
         childRoutes: [{
-            path: 'all',
+            path: 'class/:type',
             getComponent: function(nextState, cb) {
                 return require.ensure([], (require) => {
-                    cb(require('containers/all').default);
+                    cb(require('containers/list').default);
                 });
             }
         }, {
-            path: ':id',
+            path: 'room/:cid',
             getComponent: function(nextState, cb) {
                 return require.ensure([], (require) => {
                     cb(require('containers/class').default);
