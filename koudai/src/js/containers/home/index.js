@@ -84,7 +84,7 @@ export default Simple.createClass({
             ce('h3', {class: 'chunk-title'}, [' - 为你定制 -']),
             ce('ul', {class: 'personalize-list'}, personalizeList.map(function(item){
                 return ce('li', {class: 'personalize-item'}, [
-                    ce('a', {href: '#/room/' + item.id}, [
+                    ce('a', {href: `#/room/${item.id}/info`}, [
                         ce('div', {class: 'img-box'}, [
                             ce('img', {src: item.cover})
                         ]),
@@ -125,7 +125,7 @@ export default Simple.createClass({
             ce('h3', {class: 'chunk-title'}, [' - 名师推荐 -']),
             ce('ul', {class: 'teacher-list'}, teacherList.map(function(item){
                 return ce('li', {class: 'teacher-item'}, [
-                    ce('a', {href: '#/teacher/' + item.id}, [
+                    ce('a', {href: `#/teacher/${item.id}`}, [
                         ce('div', {class: 'img-box'}, [
                             ce('img', {src: item.cover})
                         ]),
@@ -178,7 +178,7 @@ export default Simple.createClass({
             ce('h3', {class: 'chunk-title'}, [' - 热门推荐 -']),
             ce('ul', {class: 'hot-list'}, hotList.map(function(item){
                 return ce('li', {class: 'hot-item'}, [
-                    ce('a', {href: '#/room/' + item.id}, [
+                    ce('a', {href: `#/room/${item.id}/info`}, [
                         ce('div', {class: 'img-box'}, [
                             ce('img', {src: item.cover})
                         ]),
