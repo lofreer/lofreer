@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>投诉</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",SimSun,sans-serif;padding:0 10px;margin:0}h2{font-size:18px;color:#333;margin-top:20px}h3{font-size:16px;color:#333;text-align:justify;margin-top:20px}p{font-size:14px;color:#666;text-align:justify}</style></head><body><p>当前用户ID为：<span id="uid"></span></p><h3>如果该用户的言行对你造成困扰，请及时联系我们，我们将会在第一时间进行处理。</h3><br><p>联系方式：</p><p>微信客服号：skone_io<br>微信公众号：skoneio<br>邮箱：support@skone.io</p><br><p>你也可以将其加入黑名单，进行屏蔽处理。</p><script>//js调用APP-传单个参数
+        // function callNativeApp(){
+        //     try{
+        //         webkit.messageHandlers.webViewApp.postMessage("Hello World")
+        //     }catch(error){
+        //         console.error('The native context not exist ')
+        //     }
+        // }
+        // 获取app数据
+        function getWebInfo(json) {
+            let data = JSON.parse(json || '{}')
+            document.querySelector('#uid').innerHTML = data.uid
+        }</script></body></html>
